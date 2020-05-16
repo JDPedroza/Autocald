@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="@string/title_maintenance_data">
+        <menu>
+            <item
+                android:id="@+id/nav_home"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/menu_customer_data" />
+            <item
+                android:id="@+id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/menu_equipment_data" />
+            <item
+                android:id="@+id/nav_slideshow"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="@string/menu_technician_data" />
+        </menu>
+    </item>
+    <item android:title="@string/title_condition_elements">
+        <menu>
+            <item
+                android:id="@+id/nav_burner_assembly"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/menu_burner_assembly" />
+            <item
+                android:id="@+id/nav_security_control"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/menu_security_control" />
+            <item
+                android:id="@+id/nav_water_level_control"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="@string/menu_water_level_control" />
+            <item
+                android:id="@+id/nav_condensate_tank"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/menu_condensate_tank" />
+            <item
+                android:id="@+id/nav_water_pump"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/menu_water_pump" />
+            <item
+                android:id="@+id/nav_security_test"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="@string/menu_security_test" />
+            <item
+                android:id="@+id/nav_body"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/menu_body" />
+            <item
+                android:id="@+id/nav_electrical_panel_control"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/menu_electrical_panel_control" />
+            <item
+                android:id="@+id/nav_electric_motors"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="@string/menu_electric_motors" />
+            <item
+                android:id="@+id/nav_pipes_accessories"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/menu_pipes_accessories" />
+        </menu>
+    </item>
+    <item android:title="@string/title_extras">
+        <menu>
+            <item
+                android:id="@+id/nav_observations_recommendations"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/menu_observations_recommendations" />
+            <item
+                android:id="@+id/nav_photo_management"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/menu_photo_management" />
+        </menu>
+    </item>
+    <item android:title="@string/title_completion">
+        <menu>
+            <item
+                android:id="@+id/nav_document_generation"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/menu_document_generation" />
+            <item
+                android:id="@+id/nav_sent_document"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/menu_sent_document" />
+        </menu>
+    </item>
+
+</menu>
