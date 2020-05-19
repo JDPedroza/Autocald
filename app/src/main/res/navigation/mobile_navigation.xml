@@ -22,4 +22,10 @@
         android:name="com.example.autocald.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_burner_assembly"
+        android:name="com.example.autocald.ui.burnerAssembly.BurnerAssembly"
+        android:label="@string/menu_burner_assembly"
+        tools:layout="@layout/fragment_burner_assembly" />
 </navigation>
