@@ -3,4 +3,30 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <!--color background-->
+    <color name="background_1">#009688</color>
+    <color name="background_2">#4CAF50</color>
+    <color name="background_3">#8BC34A</color>
+    <color name="background_4">#CDDC39</color>
+
+    <!--color background-->
+    <color name="dots_1">#F44336</color>
+    <color name="dots_2">#E91E63</color>
+    <color name="dots_3">#9C27B0</color>
+    <color name="dots_4">#673AB7</color>
+
+    <array name="array_background">
+        <item>@color/background_1</item>
+        <item>@color/background_2</item>
+        <item>@color/background_3</item>
+        <item>@color/background_4</item>
+    </array>
+
+    <array name="array_dots">
+        <item>@color/dots_1</item>
+        <item>@color/dots_2</item>
+        <item>@color/dots_3</item>
+        <item>@color/dots_4</item>
+    </array>
 </resources>
