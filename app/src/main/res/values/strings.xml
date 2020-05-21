@@ -1,4 +1,5 @@
 <resources>
+    <!--Aplicacion-->
     <string name="app_name">Autocald</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -6,18 +7,21 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
+    <string name="title_test">Prueba</string>
+    
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="home_second">Home Second</string>
 
+    <!--Conjunto Datos mantenimiento-->
     <string name="title_maintenance_data">Datos Mantenimiento</string>
     <string name="menu_customer_data">Datos del cliente</string>
     <string name="menu_equipment_data">Datos del equipo</string>
     <string name="menu_technician_data">Datos del técnico</string>
 
+    <!--Conjunto Estado elementos-->
     <string name="title_condition_elements">Estado de los elementos</string>
     <string name="menu_burner_assembly">Conjunto Quemador</string>
     <string name="menu_security_control">Controles de Seguridad</string>
@@ -30,14 +34,26 @@
     <string name="menu_electric_motors">Motores Eléctricos</string>
     <string name="menu_pipes_accessories">Tuberías - Accesorios</string>
 
+    <!--Conjunto Extras-->
     <string name="title_extras">Extras</string>
     <string name="menu_observations_recommendations">Observaciones - Recomendaciones</string>
     <string name="menu_photo_management">Administración Fotos</string>
 
+    <!--Conjunto Finalizacion-->
     <string name="title_completion">Finalización</string>
     <string name="menu_document_generation">Generación Documento</string>
     <string name="menu_sent_document">Envió Documento</string>
-
+    
+    <!--Formulario Sliders-->
+    <string name="text_status">Estado</string>
+    <string name="btn_b">B</string>
+    <string name="btn_r">R</string>
+    <string name="btn_m">M</string>
+    <string name="text_observations">Observaciones</string>
+    <string name="editText_observations_default">NA</string>
+    <string name="text_photos">Fotos</string>
+    <string name="text_number_photos">No se han añadido fotos</string>
+    
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

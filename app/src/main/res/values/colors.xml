@@ -17,7 +17,7 @@
     <color name="dots_4">#673AB7</color>
 
     <array name="array_background">
-        <item>@color/background_1</item>
+        <item>#45AAA1</item>
         <item>@color/background_2</item>
         <item>@color/background_3</item>
         <item>@color/background_4</item>
@@ -29,4 +29,13 @@
         <item>@color/dots_3</item>
         <item>@color/dots_4</item>
     </array>
+
+    <color name="btnGood">#4CAF50</color>
+    <color name="btnRegular">#FFEB3B</color>
+    <color name="btnBad">#F43636</color>
+    <color name="btnUnselected">#A19797</color>
+
+
+
 </resources>
+

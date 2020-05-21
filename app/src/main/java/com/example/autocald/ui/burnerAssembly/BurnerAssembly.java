@@ -22,6 +22,8 @@ import com.example.autocald.R;
 import com.example.autocald.ui.sliders.MyViewPagerAdapter;
 import com.example.autocald.ui.sliders.SliderFragment;
 
+import java.lang.reflect.Array;
+
 public class BurnerAssembly extends Fragment{
 
     private ViewPager viewPager;
@@ -30,10 +32,9 @@ public class BurnerAssembly extends Fragment{
     private Button btnBack;
     private Button btnNext;
 
-    private String[]title={"1", "2", "3", "4"};
-    private String[]content={"hola1", "hola2", "hola3", "hola4"};
-    private int[]image={R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background};
-    private int[]colorBackground, colorDots;
+    private String[]title={"Valvula de Combustible", "Ventilador", "Trasformador de Ignicion", "Electrodos"};
+    public int[][]array={{}, {}, {}, {}};
+    private int[]colorDots;
 
     private TextView[] dots;
 
@@ -65,7 +66,6 @@ public class BurnerAssembly extends Fragment{
         btnBack = view.findViewById(R.id.btnBack);
         btnNext = view.findViewById(R.id.btnNext);
 
-        colorBackground=getResources().getIntArray(R.array.array_background);
         colorDots=getResources().getIntArray(R.array.array_dots);
 
         addDots(0);
@@ -101,19 +101,17 @@ public class BurnerAssembly extends Fragment{
     public void loadViewPager(){
         adapter = new MyViewPagerAdapter(getActivity().getSupportFragmentManager());
         for(int i=0; i<title.length; i++){
-            adapter.addFragment(newInstance(title[i], content[i], image[i], colorBackground[i]));
+            adapter.addFragment(newInstance(title[i], array[i]));
         }
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(pagerListener);
     }
 
     //metodo que genera los sliders
-    private SliderFragment newInstance(String title, String content, int image, int color){
+    private SliderFragment newInstance(String title, int[] array){
         Bundle bundle=new Bundle();
         bundle.putString("title", title);
-        bundle.putString("content", content);
-        bundle.putInt("image", image);
-        bundle.putInt("color", color);
+        bundle.putIntArray("array", array);
 
         SliderFragment fragment=new SliderFragment();
         fragment.setArguments(bundle);
