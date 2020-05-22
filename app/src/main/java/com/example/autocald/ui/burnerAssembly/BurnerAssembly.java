@@ -32,9 +32,9 @@ public class BurnerAssembly extends Fragment{
     private Button btnBack;
     private Button btnNext;
 
-    private String[]title={"Valvula de Combustible", "Ventilador", "Trasformador de Ignicion", "Electrodos"};
-    public int[][]array={{}, {}, {}, {}};
-    private int[]colorDots;
+    private String[]title={"Valvula de Combustible", "Ventilador", "Trasformador de Ignicion", "Electrodos", "Cable de Alta", "Boquilla de combustible", "Reguladora de Combustible", "Filtro de combustible", "Tuberia de combustible", "Manometros de Combustible", "Swich de Presion"};
+    private String[]dataForm={"FuelValve", "Fan", "IgnitionTransformer", "Electrodes", "HighCable", "FuelNozzle", "FuelRegulator", "FuelFilter", "FuelLine", "FuelGauges", "PressureSwich"};
+    public int[][]array={{1, 2, 3,}, {}, {}, {}};
 
     private TextView[] dots;
 
@@ -65,8 +65,6 @@ public class BurnerAssembly extends Fragment{
         dotLayout = view.findViewById(R.id.layoutDots);
         btnBack = view.findViewById(R.id.btnBack);
         btnNext = view.findViewById(R.id.btnNext);
-
-        colorDots=getResources().getIntArray(R.array.array_dots);
 
         addDots(0);
         loadViewPager();
@@ -101,17 +99,17 @@ public class BurnerAssembly extends Fragment{
     public void loadViewPager(){
         adapter = new MyViewPagerAdapter(getActivity().getSupportFragmentManager());
         for(int i=0; i<title.length; i++){
-            adapter.addFragment(newInstance(title[i], array[i]));
+            adapter.addFragment(newInstance(title[i], dataForm[i]));
         }
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(pagerListener);
     }
 
     //metodo que genera los sliders
-    private SliderFragment newInstance(String title, int[] array){
+    private SliderFragment newInstance(String title, String dataForm){
         Bundle bundle=new Bundle();
         bundle.putString("title", title);
-        bundle.putIntArray("array", array);
+        bundle.putString("dataForm", dataForm);
 
         SliderFragment fragment=new SliderFragment();
         fragment.setArguments(bundle);
@@ -127,7 +125,7 @@ public class BurnerAssembly extends Fragment{
             dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(35);
             if(i==currentPage){
-                dots[i].setTextColor(colorDots[i]);
+                dots[i].setTextColor(getResources().getColor(R.color.colorAccent));
             }else{
                 dots[i].setTextColor(Color.LTGRAY);
             }
@@ -144,7 +142,6 @@ public class BurnerAssembly extends Fragment{
         @Override
         public void onPageSelected(int position) {
             addDots(position);
-
             if(position==title.length-1){
                 btnNext.setText("Obtener");
                 btnBack.setText("Salir");

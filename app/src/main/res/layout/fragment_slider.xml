@@ -21,25 +21,25 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:text="@string/title_test"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha=".5"
-            android:background="@android:color/white" />
+            android:background="@android:color/background_dark" />
 
         <TextView
             android:id="@+id/state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="5dp"
             android:text="@string/text_status"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -48,31 +48,36 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_height="60dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="25dp">
 
             <Button
                 android:id="@+id/btnB"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_b"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/style_btn_default"/>
 
             <Button
                 android:id="@+id/btnR"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_r"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
+                android:layout_margin="5dp"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/style_btn_default"
                 />
             <Button
                 android:id="@+id/btnM"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_m"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/style_btn_default"
                 />
 
         </LinearLayout>
@@ -81,53 +86,56 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha=".5"
-            android:background="@android:color/white" />
+            android:background="@android:color/background_dark" />
 
         <TextView
             android:id="@+id/observation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="5dp"
             android:gravity="center_horizontal"
             android:text="@string/text_observations"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinner"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"/>
+            android:layout_width="310dp"
+            android:layout_height="41dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/style_spinner"
+            android:backgroundTintMode="add"/>
 
         <EditText
             android:id="@+id/editText"
-            android:layout_width="wrap_content"
+            android:layout_width="310dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:ems="10"
+            android:layout_marginBottom="25dp"
+            android:ems="13"
             android:inputType="textPersonName"
-            android:text="@string/editText_observations_default" />
+            android:text="@string/editText_observations_default"
+            android:textSize="16sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha=".5"
-            android:background="@android:color/white" />
+            android:background="@android:color/background_dark" />
 
         <TextView
             android:id="@+id/photos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="5dp"
             android:gravity="center_horizontal"
             android:text="@string/text_photos"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -139,9 +147,8 @@
             android:gravity="center_horizontal"
             android:text="@string/text_number_photos"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
 
 
     </LinearLayout>
