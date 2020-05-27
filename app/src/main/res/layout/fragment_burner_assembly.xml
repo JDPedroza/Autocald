@@ -34,7 +34,8 @@
         android:layout_alignParentRight="true"
         android:background="@null"
         android:textStyle="bold"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
+        android:text="@string/title_test"
         />
 
     <Button
@@ -45,7 +46,8 @@
         android:layout_alignParentLeft="true"
         android:background="@null"
         android:textStyle="bold"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
+        android:text="@string/title_test"
         />
 
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -278,6 +279,19 @@ public class SliderFragment extends Fragment {
         String dataObservationText = dataForm.getString("dataObservationText", "NA");
         observation.setText(dataObservationText);
 
+    }
+
+    public void resetFrom(){
+        btnB.setBackgroundResource(R.drawable.style_btn_unselected);
+        btnB.setTextColor(getResources().getColor(R.color.btnUnselected));
+        btnR.setBackgroundResource(R.drawable.style_btn_unselected);
+        btnR.setTextColor(getResources().getColor(R.color.btnUnselected));
+        btnM.setBackgroundResource(R.drawable.style_btn_unselected);
+        btnM.setTextColor(getResources().getColor(R.color.btnUnselected));
+
+        spinnerObservations.setSelection(0);
+
+        observation.setText("NA");
     }
 
     /*

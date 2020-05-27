@@ -14,23 +14,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.autocald.R;
+import com.example.autocald.ui.sliders.MyPagerAdapter;
 import com.example.autocald.ui.sliders.MyViewPagerAdapter;
 import com.example.autocald.ui.sliders.SliderFragment;
-
-import java.lang.reflect.Array;
 
 public class BurnerAssembly extends Fragment{
 
     private ViewPager viewPager;
     private MyViewPagerAdapter adapter;
+    private MyPagerAdapter adapter2;
     private LinearLayout dotLayout;
     private Button btnBack;
     private Button btnNext;
+    private int onPageSelected;
 
     private String[]title={"Valvula de Combustible", "Ventilador", "Trasformador de Ignicion", "Electrodos", "Cable de Alta", "Boquilla de combustible", "Reguladora de Combustible", "Filtro de combustible", "Tuberia de combustible", "Manometros de Combustible", "Swich de Presion"};
     private String[]dataForm={"FuelValve", "Fan", "IgnitionTransformer", "Electrodes", "HighCable", "FuelNozzle", "FuelRegulator", "FuelFilter", "FuelLine", "FuelGauges", "PressureSwich"};
@@ -84,12 +84,8 @@ public class BurnerAssembly extends Fragment{
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int next=getItem(+1);
-                if(next<title.length) {
-                    viewPager.setCurrentItem(next);
-                }else{
-                    Toast.makeText(getActivity().getApplicationContext(),"Obtener Promocion",Toast.LENGTH_LONG).show();
-                }
+                resetForm();
+                Toast.makeText(getActivity().getApplicationContext(),"Obtener Promocion",Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -98,8 +94,10 @@ public class BurnerAssembly extends Fragment{
 
     public void loadViewPager(){
         adapter = new MyViewPagerAdapter(getActivity().getSupportFragmentManager());
+        //adapter2 = new MyPagerAdapter(getActivity().getSupportFragmentManager());
         for(int i=0; i<title.length; i++){
-            adapter.addFragment(newInstance(title[i], dataForm[i]));
+            adapter.addFragment(newInstance(title[i], dataForm[i]), i);
+            //adapter2.addFragment(newInstance(title[i], dataForm[i]));
         }
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(pagerListener);
@@ -160,6 +158,17 @@ public class BurnerAssembly extends Fragment{
 
     private int getItem(int i){
         return viewPager.getCurrentItem()+i;
+    }
+
+    public void resetForm(){
+        adapter.addFragment(newInstance("hello world", dataForm[1]), 1);
+        viewPager.setAdapter(adapter);
+        addDots(0);
+        //int a = viewPager.getCurrentItem();
+        //adapter.resetFragment(newInstance("holamundo", dataForm[a]), viewPager);
+        //FragmentTransaction tr = getFragmentManager().beginTransaction();
+        //tr.replace(R.id.viewPager, new SliderFragment());
+        //tr.commit();
     }
 
 }
