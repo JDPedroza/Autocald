@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.autocald.MainActivity;
 import com.example.autocald.R;
 import com.example.autocald.utilities.CaptureBitmapView;
 
@@ -48,8 +49,8 @@ public class DigitalSignature extends Fragment {
             @Override
             public void onClick(View v) {
                 Bitmap signature = mSig.getBitmap();
-                Toast.makeText(getActivity().getApplicationContext(), "Hello World" + signature.toString(), Toast.LENGTH_LONG).show();
-            }
+                ((MainActivity)getActivity()).removeFragment(signature);
+                }
         });
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +58,5 @@ public class DigitalSignature extends Fragment {
                 mSig.ClearCanvas();
             }
         });
-
-
     }
 }

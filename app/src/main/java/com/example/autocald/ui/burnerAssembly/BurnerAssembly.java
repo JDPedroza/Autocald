@@ -66,7 +66,6 @@ public class BurnerAssembly extends Fragment implements SliderFragment.Actualiza
         adapter = new MyViewPagerAdapter(getActivity().getSupportFragmentManager());
         for(int i=0; i<title.length; i++){
             adapter.addFragment(newInstance(title[i], dataForm[i]), i);
-            //adapter2.addFragment(newInstance(title[i], dataForm[i]));
         }
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(pagerListener);

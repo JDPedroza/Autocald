@@ -1,19 +1,29 @@
 package com.example.autocald;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
 
 import com.example.autocald.controller.activity.MainActivityController;
 import com.example.autocald.ui.burnerAssembly.BurnerAssembly;
 import com.example.autocald.ui.dataClient.DataClient;
 import com.example.autocald.ui.digitalSignature.DigitalSignature;
+import com.example.autocald.ui.documentGeneration.DocumentGeneration;
+import com.example.autocald.utilities.TemplatePDF;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -32,13 +42,25 @@ public class MainActivity extends AppCompatActivity {
     private DataClient dataClient = null;
     private BurnerAssembly burnerAssembly = null;
     private DigitalSignature digitalSignature = null;
+    private DocumentGeneration documentGeneration =null;
     private FloatingActionButton fab = null;
 
+    //btn
+    Button btnSave=null;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)  != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)  != PackageManager.PERMISSION_GRANTED
+        ){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,},1000);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,},1000);
+        }
 
         //Toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -66,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        MainActivityController.Companion.addFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), dataClient = new DataClient());
+        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), dataClient = new DataClient());
         toolbar.setTitle(R.string.menu_customer_data);
         fab.hide();
 
@@ -75,13 +97,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 //dataClient
                 if(item.getItemId()==R.id.nav_data_client){
-                    MainActivityController.Companion.addFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), dataClient = new DataClient());
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), dataClient = new DataClient());
                     toolbar.setTitle(R.string.menu_customer_data);
                     drawer.closeDrawers();
                 }
                 //dataComputer
                 if(item.getItemId()==R.id.nav_computer_data){
-                    MainActivityController.Companion.addFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), digitalSignature = new DigitalSignature());
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), digitalSignature = new DigitalSignature());
                     drawer.closeDrawers();
                     toolbar.setTitle(R.string.menu_customer_data);
                 }
@@ -152,9 +174,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //DocumentGeneration
                 if(item.getItemId()==R.id.nav_document_generation){
-                    drawer.closeDrawers();
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration());
+                    MainActivityController.Companion.addFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), digitalSignature = new DigitalSignature());
+                    //initializeButtonGenerate();
                     toolbar.setTitle(R.string.menu_burner_assembly);
+                    drawer.closeDrawers();
                 }
+
                 return false;
             }
         });
@@ -189,6 +215,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void removeFragment(Bitmap signature){
+        MainActivityController.Companion.removeFragment(getSupportFragmentManager(), digitalSignature);
+        documentGeneration.setSignature(signature);
     }
 
 }

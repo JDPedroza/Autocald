@@ -71,7 +71,14 @@
     <string name="button_save">GUARDAR</string>
     <string name="button_clear">LIMPIAR</string>
 
+    <!--Formulario Generar Documento-->
+    <string name="button_generate_document">Generar Documento</string>
+    <string name="button_send_document">Enviar Documento</string>
+
     <!--Extras-->
     <string name="extra_empty" />
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
