@@ -12,29 +12,21 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.autocald.R;
-import com.example.autocald.ui.sliders.MyPagerAdapter;
-import com.example.autocald.ui.sliders.MyViewPagerAdapter;
-import com.example.autocald.ui.sliders.SliderFragment;
+import com.example.autocald.controller.sliders.MyViewPagerAdapter;
+import com.example.autocald.controller.sliders.SliderFragment;
 
-public class BurnerAssembly extends Fragment{
+public class BurnerAssembly extends Fragment implements SliderFragment.Actualizar{
 
     private ViewPager viewPager;
     private MyViewPagerAdapter adapter;
-    private MyPagerAdapter adapter2;
     private LinearLayout dotLayout;
-    private Button btnBack;
-    private Button btnNext;
-    private int onPageSelected;
 
     private String[]title={"Valvula de Combustible", "Ventilador", "Trasformador de Ignicion", "Electrodos", "Cable de Alta", "Boquilla de combustible", "Reguladora de Combustible", "Filtro de combustible", "Tuberia de combustible", "Manometros de Combustible", "Swich de Presion"};
     private String[]dataForm={"FuelValve", "Fan", "IgnitionTransformer", "Electrodes", "HighCable", "FuelNozzle", "FuelRegulator", "FuelFilter", "FuelLine", "FuelGauges", "PressureSwich"};
-    public int[][]array={{1, 2, 3,}, {}, {}, {}};
 
     private TextView[] dots;
 
@@ -58,43 +50,20 @@ public class BurnerAssembly extends Fragment{
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         viewPager = view.findViewById(R.id.viewPager);
         dotLayout = view.findViewById(R.id.layoutDots);
-        btnBack = view.findViewById(R.id.btnBack);
-        btnNext = view.findViewById(R.id.btnNext);
 
         addDots(0);
         loadViewPager();
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(viewPager.getCurrentItem()==title.length-1){
-                    getActivity().finish();
-                }else{
-                    int back=getItem(-1);
-                    viewPager.setCurrentItem(back);
-                }
-            }
-        });
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetForm();
-                Toast.makeText(getActivity().getApplicationContext(),"Obtener Promocion",Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     //metodo para cargar las pantallas
 
     public void loadViewPager(){
         adapter = new MyViewPagerAdapter(getActivity().getSupportFragmentManager());
-        //adapter2 = new MyPagerAdapter(getActivity().getSupportFragmentManager());
         for(int i=0; i<title.length; i++){
             adapter.addFragment(newInstance(title[i], dataForm[i]), i);
             //adapter2.addFragment(newInstance(title[i], dataForm[i]));
@@ -140,14 +109,6 @@ public class BurnerAssembly extends Fragment{
         @Override
         public void onPageSelected(int position) {
             addDots(position);
-            if(position==title.length-1){
-                btnNext.setText("Obtener");
-                btnBack.setText("Salir");
-            }else{
-                btnNext.setText("Siguiente");
-                btnBack.setText("Atras");
-            }
-
         }
 
         @Override
@@ -161,14 +122,11 @@ public class BurnerAssembly extends Fragment{
     }
 
     public void resetForm(){
-        adapter.addFragment(newInstance("hello world", dataForm[1]), 1);
-        viewPager.setAdapter(adapter);
-        addDots(0);
-        //int a = viewPager.getCurrentItem();
-        //adapter.resetFragment(newInstance("holamundo", dataForm[a]), viewPager);
-        //FragmentTransaction tr = getFragmentManager().beginTransaction();
-        //tr.replace(R.id.viewPager, new SliderFragment());
-        //tr.commit();
+        adapter.resetFragment((SliderFragment) adapter.getCurrentFragment());
     }
 
+    @Override
+    public void actualizarItem() {
+
+    }
 }

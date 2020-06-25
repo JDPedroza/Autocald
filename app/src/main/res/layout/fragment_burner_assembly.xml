@@ -26,28 +26,4 @@
         android:background="@android:color/white"
         android:layout_above="@+id/layoutDots"/>
 
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@null"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:text="@string/title_test"
-        />
-
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@null"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:text="@string/title_test"
-        />
-
 </RelativeLayout>

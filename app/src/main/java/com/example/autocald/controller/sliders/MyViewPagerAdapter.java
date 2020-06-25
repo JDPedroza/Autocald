@@ -1,18 +1,19 @@
-package com.example.autocald.ui.sliders;
+package com.example.autocald.controller.sliders;
+
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-
-import com.example.autocald.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyViewPagerAdapter extends FragmentPagerAdapter {
+
+    private Fragment mCurrentFragment;
 
     //generamos un array para que sera recursivos los fragments
     FragmentManager fm;
@@ -44,9 +45,19 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
             notifyDataSetChanged();
      }
 
-    public void resetFragment(Fragment fragment, ViewPager viewPager){
-        list.remove(9);
-        tr.replace(viewPager.getId(), fragment);
-        tr.commit();
+    public void resetFragment(SliderFragment fragment){
+        fragment.resetFrom();
+    }
+
+    @Override
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        if (getCurrentFragment() != object) {
+            mCurrentFragment = ((Fragment) object);
+        }
+        super.setPrimaryItem(container, position, object);
+    }
+
+    public Fragment getCurrentFragment() {
+        return mCurrentFragment;
     }
 }

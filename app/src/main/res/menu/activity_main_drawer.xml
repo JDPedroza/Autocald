@@ -11,11 +11,11 @@
                 android:icon="@drawable/ic_menu_client_data"
                 android:title="@string/menu_customer_data" />
             <item
-                android:id="@+id/nav_gallery"
+                android:id="@+id/nav_computer_data"
                 android:icon="@drawable/ic_menu_computer_data"
                 android:title="@string/menu_equipment_data" />
             <item
-                android:id="@+id/nav_slideshow"
+                android:id="@+id/nav_technical_data"
                 android:icon="@drawable/ic_menu_technical_data"
                 android:title="@string/menu_technician_data" />
         </menu>

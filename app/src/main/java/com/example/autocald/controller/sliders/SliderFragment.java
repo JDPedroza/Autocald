@@ -1,4 +1,4 @@
-package com.example.autocald.ui.sliders;
+package com.example.autocald.controller.sliders;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +31,17 @@ public class SliderFragment extends Fragment {
     Spinner spinnerObservations;
     EditText observation;
     SharedPreferences dataForm;
+
+    // Interfaz Actualizar
+    public interface Actualizar{
+
+        // Método de la interfaz
+        public void actualizarItem();
+    }
+
+    // Objeto de la interfaz actualizar, con este objeto llamaremos el
+    // método de la interfaz
+    Actualizar actualizar;
 
 
     @Nullable
@@ -294,11 +303,4 @@ public class SliderFragment extends Fragment {
         observation.setText("NA");
     }
 
-    /*
-    Debugeador :v
-    public  void mostrar(String i){
-        Toast.makeText(getActivity().getApplicationContext(),"Funcionalidad Activa " +i,Toast.LENGTH_LONG).show();
-    }
-
-     */
 }

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimaryLight">#35302A</color>
+    <color name="colorPrimaryTranslucent">#B323201C</color>
     <color name="colorPrimary">#23201C</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#EA7F00</color>
 
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorGray">#9c9c9c</color>
 
     <!--color background-->
     <color name="background_1">#009688</color>
