@@ -8,10 +8,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.autocald.ui.conditionBoilerElements.SliderFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyViewPagerAdapter extends FragmentPagerAdapter {
+public class ViewPagerAdapterController extends FragmentPagerAdapter {
 
     private Fragment mCurrentFragment;
 
@@ -20,7 +22,7 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
     FragmentTransaction tr;
     List<Fragment> list=new ArrayList<>();
 
-    public MyViewPagerAdapter(@NonNull FragmentManager fm) {
+    public ViewPagerAdapterController(@NonNull FragmentManager fm) {
         super(fm);
         this.fm = fm;
         this.tr = fm.beginTransaction();
@@ -47,6 +49,10 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
 
     public void resetFragment(SliderFragment fragment){
         fragment.resetFrom();
+    }
+
+    public void addPhoto(SliderFragment fragment, String path){
+        fragment.addPhoto(path);
     }
 
     @Override

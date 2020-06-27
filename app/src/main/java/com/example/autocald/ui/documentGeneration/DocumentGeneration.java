@@ -18,8 +18,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.autocald.BuildConfig;
+import com.example.autocald.MainActivity;
 import com.example.autocald.R;
 import com.example.autocald.utilities.TemplatePDF;
+
+import java.io.IOException;
 
 public class DocumentGeneration extends Fragment {
 
@@ -48,7 +51,12 @@ public class DocumentGeneration extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                templatePDF = new TemplatePDF(getActivity().getApplicationContext(), signature);
+                try {
+                    templatePDF = new TemplatePDF(getActivity().getApplicationContext(), signature);
+                    //getActivity().onBackPressed();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         btnSend.setOnClickListener(new View.OnClickListener() {

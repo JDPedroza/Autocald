@@ -1,8 +1,9 @@
-package com.example.autocald.controller.sliders;
+package com.example.autocald.ui.conditionBoilerElements;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,6 +32,9 @@ public class SliderFragment extends Fragment {
     Spinner spinnerObservations;
     EditText observation;
     SharedPreferences dataForm;
+
+    int numberPhotos=0;
+    String path="";
 
     // Interfaz Actualizar
     public interface Actualizar{
@@ -238,6 +242,14 @@ public class SliderFragment extends Fragment {
             editor.putString("dataObservationText", dataObservation);
         }
 
+        if(id==10){
+            String numberPhotos = number_photos.getText().toString();
+            editor.putString("numberPhotosText", numberPhotos);
+            editor.putBoolean("addPhotoBoolean", true);
+            editor.putString("pathPhoto"+this.numberPhotos+"Text", path);
+            editor.putInt("numberPhotosInt", this.numberPhotos);
+        }
+
         editor.apply();
     }
 
@@ -288,6 +300,9 @@ public class SliderFragment extends Fragment {
         String dataObservationText = dataForm.getString("dataObservationText", "NA");
         observation.setText(dataObservationText);
 
+        //validacion photos
+        String dataNumberPhotosText = dataForm.getString("numberPhotosText", "No se han añadido fotos");
+        number_photos.setText(dataNumberPhotosText);
     }
 
     public void resetFrom(){
@@ -303,4 +318,10 @@ public class SliderFragment extends Fragment {
         observation.setText("NA");
     }
 
+    public void addPhoto(String path){
+        numberPhotos++;
+        number_photos.setText(numberPhotos + " foto(s) añadida");
+        this.path = path;
+        setForm(10);
+    }
 }

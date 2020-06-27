@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
@@ -13,6 +15,7 @@ import androidx.core.content.FileProvider;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -37,6 +40,9 @@ public class TemplatePDF extends FileProvider{
     private File pdfFile;
     private Document document;
     private PdfWriter pdfWriter;
+    private Image imgTest = null;
+    private String[]paths;
+    private Image[]images;
     //List Format
     private Font fTextGenericTitle = new Font(Font.FontFamily.HELVETICA, 11);
     private Font fTextGenericTitle1 = new Font(Font.FontFamily.HELVETICA, 5);
@@ -64,7 +70,7 @@ public class TemplatePDF extends FileProvider{
     SharedPreferences dataForm;
     //builder
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public TemplatePDF(Context context, Bitmap signature) {
+    public TemplatePDF(Context context, Bitmap signature) throws IOException {
         this.context=context;
         this.signature = signature;
         loadData();
@@ -73,7 +79,7 @@ public class TemplatePDF extends FileProvider{
         createTable();
         closeDocument();
     }
-    private void loadData(){
+    private void loadData() throws IOException {
         //1
         this.dataClient = new String[]{"366", "13/09/2019", "Mant General y Correctivo", "ALSAEM", "80 BHP", "DISTRAL"};
         //2
@@ -95,17 +101,17 @@ public class TemplatePDF extends FileProvider{
         this.dataTechnical = new String[]{"Carlos Martinez - Santiago Sanchez", "0", "0", "0", "Ivan Fernando Camargo"};
         //4
         this.dataBurnerAssembly = new String[][]{
-                {"Valvula de Combustible", "2", "Presenta fuga de aceite"},
-                {"Ventilador", "1", "Se reviso"},
-                {"Trasformador de Ignicion", "1", "Se reviso"},
-                {"Electrodos", "1", "Se limpiaron"},
-                {"Cable de Alta", "1", "OK"},
-                {"Cable de Alta", "1", "Se limpio"},
-                {"Boquilla de combustible", "2", "Presenta venteo"},
-                {"Filtro de combustible", "0", "NA"},
-                {"Tuberia de combustible", "1", ""},
-                {"Manometros de Combustible", "2", "manometro en valvula dañado"},
-                {"Swich de Presion", "1", "OK"}
+                {"Valvula de Combustible", "", ""},
+                {"Ventilador", "", ""},
+                {"Trasformador de Ignicion", "", ""},
+                {"Electrodos", "", ""},
+                {"Cable de Alta", "", ""},
+                {"Boquilla de combustible", "", ""},
+                {"Reguladora de Combustible", "", ""},
+                {"Filtro de combustible", "", ""},
+                {"Tuberia de combustible", "", ""},
+                {"Manometros de Combustible", "", ""},
+                {"Swich de Presion", "", ""}
         };
         //5
         this.dataControlSecurity = new String[][]{
@@ -238,8 +244,12 @@ public class TemplatePDF extends FileProvider{
 
         };
 
+        loadDataBurnerAssembly();
+        //loadDataControlSecurity();
+        loadImages();
+    }
+    private void loadDataBurnerAssembly() {
         String[]namesDataForm={"FuelValve", "Fan", "IgnitionTransformer", "Electrodes", "HighCable", "FuelNozzle", "FuelRegulator", "FuelFilter", "FuelLine", "FuelGauges", "PressureSwich"};
-
         for(int i=0; i<namesDataForm.length; i++){
             dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
 
@@ -260,8 +270,97 @@ public class TemplatePDF extends FileProvider{
 
             //validacion observacion
             this.dataBurnerAssembly[i][2] = dataForm.getString("dataObservationText", "NA");
-        }
 
+            boolean addPhoto = dataForm.getBoolean("addPhotoBoolean", false);
+            if(addPhoto){
+                loadPath(dataForm);
+            }
+        }
+    }
+    private void loadDataControlSecurity() {
+        String[]namesDataForm={"FuelValve", "Fan", "IgnitionTransformer", "Electrodes", "HighCable", "FuelNozzle", "FuelRegulator", "FuelFilter", "FuelLine", "FuelGauges", "PressureSwich"};
+        for(int i=0; i<namesDataForm.length; i++){
+            dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
+
+            boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
+            boolean btnRPress = dataForm.getBoolean("dataBtnR", false);
+            boolean btnMPress = dataForm.getBoolean("dataBtnM", false);
+
+            //validación botones
+            if(btnBPress){
+                this.dataControlSecurity[i][1] = "1";
+            }else if(btnRPress){
+                this.dataControlSecurity[i][1] = "2";
+            }else if(btnMPress){
+                this.dataControlSecurity[i][1] = "3";
+            }else {
+                this.dataControlSecurity[i][1] = "0";
+            }
+
+            //validacion observacion
+            this.dataControlSecurity[i][2] = dataForm.getString("dataObservationText", "NA");
+
+            boolean addPhoto = dataForm.getBoolean("addPhotoBoolean", false);
+            if(addPhoto){
+                loadPath(dataForm);
+            }
+        }
+    }
+    private void loadPath(SharedPreferences dataForm){
+            if(this.paths==null){
+                int numberPhotos = dataForm.getInt("numberPhotosInt", 0);
+                this.paths= new String[numberPhotos];
+                for (int i=0; i<numberPhotos; i++){
+                    this.paths[i] = dataForm.getString("pathPhoto"+(i+1)+"Text", "");
+                }
+            }else{
+                int j=0;
+                int lastNumberPhotos = paths.length;
+                int numberPhotos = lastNumberPhotos + dataForm.getInt("numberPhotosInt", 0);;
+                this.paths= resizeArray(numberPhotos, this.paths);
+                for (int i=lastNumberPhotos; i<numberPhotos; i++){
+                    this.paths[i] = dataForm.getString("pathPhoto"+(j+1)+"Text", "");
+                    j++;
+                }
+            }
+
+    }
+    public static String[] resizeArray(int resize, String[] a) {
+
+        String[] b = new String[resize];
+        /* 1ºArg: Array origen,
+         * 2ºArg: Por donde comienza a copiar en el origen
+         * 3ºArg: Array destino
+         * 4ºArg: Por donde comienza a pegar en el destino
+         * 5ºArg: Numero de elementos que copiara del origen
+         */
+        System.arraycopy(a, 0, b, 0, a.length);
+
+        return b;
+    }
+    private void loadImages() throws IOException{
+        Bitmap bm;
+        Image image;
+            this.images= new Image[this.paths.length];
+            for(int i=0; i<paths.length; i++){
+                bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(paths[i]));
+                image = generateImage(bm);
+                images[i]=image;
+            }
+    }
+    private Image generateImage(Bitmap bm){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Image img = null;
+        byte[] byteArray = stream.toByteArray();
+        try {
+            img = Image.getInstance(byteArray);
+        } catch (BadElementException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return img;
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void createFile(){
@@ -330,7 +429,8 @@ public class TemplatePDF extends FileProvider{
          */
         //primera fila
         PdfPCell cell = new PdfPCell();
-        cell.addElement(getImage());
+        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.logotype_pdf);
+        cell.addElement(generateImage(bm));
         cell.setColspan(5);
         cell.setRowspan(4);
         table.addCell(cell);
@@ -564,7 +664,18 @@ public class TemplatePDF extends FileProvider{
 
                 rowSpan = ((getLength(14)-(cModule14-1))+getLength(15)+1);
 
-                table.addCell(customizeCell("", 3, false, false, rowSpan, 5));
+                Paragraph p = new Paragraph();
+                for(int j=0; j<images.length; j++){
+                    Image img = Image.getInstance(images[j]);
+                    img.scaleAbsolute(65, 90);
+                    p.add(new Chunk(img, 0, 0, true));
+                }
+                PdfPCell cell = new PdfPCell();
+                cell.addElement(p);
+                cell.setColspan(5);
+                cell.setRowspan(rowSpan);
+                table.addCell(cell);
+                //table.addCell(customizeCell("", 3, false, false, rowSpan, 5));
                 cIObservations=i;
             }else if(i<(cIObservations+getLength(14))-2){
                 table.addCell(customizeCell(getData(14, cModule14, 0), 3, false, false, 0, 5));
@@ -601,27 +712,13 @@ public class TemplatePDF extends FileProvider{
         table.addCell(customizeCell("SELLO DE ACEPTACION", 0, false, false, 0, 5));
 
         PdfPCell cell = new PdfPCell();
-        cell.addElement(setSignature());
+        Bitmap bm = this.signature;
+        cell.addElement(generateImage(bm));
         cell.setColspan(5);
         cell.setRowspan(3);
         table.addCell(cell);
         table.addCell(customizeCell("Prueba", 0, false, false, 3, 5));
         return table;
-    }
-    private Image getImage(){
-        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.logotype_pdf);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        Image img = null;
-        byte[] byteArray = stream.toByteArray();
-        try {
-            img = Image.getInstance(byteArray);
-        } catch (BadElementException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
     }
     private String getData(int module, int i, int j){
         String[][]data={{}};
@@ -731,21 +828,6 @@ public class TemplatePDF extends FileProvider{
             table.addCell(customizeCell("", 3, false, true, 0, 0));
         }
         return table;
-    }
-    private Image setSignature(){
-        Bitmap bm = this.signature;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        Image img = null;
-        byte[] byteArray = stream.toByteArray();
-        try {
-            img = Image.getInstance(byteArray);
-        } catch (BadElementException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
     }
     public File getFile() {
         if(pdfFile.exists()){

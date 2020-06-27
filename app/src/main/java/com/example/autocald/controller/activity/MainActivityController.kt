@@ -3,7 +3,7 @@ package com.example.autocald.controller.activity
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.example.autocald.ui.burnerAssembly.BurnerAssembly
+import com.example.autocald.ui.conditionBoilerElements.MainConditionBoilerElements
 
 class MainActivityController {
     companion object {
@@ -16,8 +16,11 @@ class MainActivityController {
         fun removeFragment(supportFragmentManager: FragmentManager, fragment: Fragment) {
             supportFragmentManager.beginTransaction().remove(fragment).commit()
         }
-        fun resetFragment(fragment: BurnerAssembly){
+        fun resetFragment(fragment: MainConditionBoilerElements){
             fragment.resetForm();
+        }
+        fun addPhoto(fragment: MainConditionBoilerElements, path: String){
+            fragment.addPhoto(path)
         }
     }
 }
