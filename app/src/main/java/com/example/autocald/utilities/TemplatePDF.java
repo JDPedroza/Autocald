@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
@@ -40,7 +39,6 @@ public class TemplatePDF extends FileProvider{
     private File pdfFile;
     private Document document;
     private PdfWriter pdfWriter;
-    private Image imgTest = null;
     private String[]paths;
     private Image[]images;
     //List Format
@@ -70,32 +68,37 @@ public class TemplatePDF extends FileProvider{
     SharedPreferences dataForm;
     //builder
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public TemplatePDF(Context context, Bitmap signature) throws IOException {
+    public TemplatePDF(Context context, Bitmap signature){
         this.context=context;
         this.signature = signature;
         loadData();
-        openDocument();
+        createDocument();
         addMetaData("clientes", "ventas", "Johan");
         createTable();
         closeDocument();
     }
-    private void loadData() throws IOException {
+    public TemplatePDF(Context context){
+        this.context=context;
+    }
+
+    //metodos
+    public void loadData(){
         //1
         this.dataClient = new String[]{"366", "13/09/2019", "Mant General y Correctivo", "ALSAEM", "80 BHP", "DISTRAL"};
         //2
         this.dataComputer = new String[][]{
-                {"Presion de Vapor", "100", ""},
-                {"Atomizacion de aire", "-", ""},
-                {"Atomizacion de vapor", "-", ""},
-                {"Temperatura de combustible", "-", ""},
-                {"Presion de combustible.", "-", ""},
-                {"Presion de Gas Linea", "20 psi", ""},
-                {"Presion de Gas Tren", "22 wca", ""},
-                {"Temperatura de Gases", "200C", ""},
-                {"Temperatura de Agua", "16 C", ""},
-                {"Nivel de Caldera", "Ok", ""},
-                {"Nivel de  Tanq Condensado", "Ok", ""},
-                {"Nivel de Tanq Combustible", "Ok", ""},
+                {"Presion de Vapor", "", ""},
+                {"Atomizacion de aire", "", ""},
+                {"Atomizacion de vapor", "", ""},
+                {"Temperatura de combustible", "", ""},
+                {"Presion de combustible.", "", ""},
+                {"Presion de Gas Linea", "", ""},
+                {"Presion de Gas Tren", "", ""},
+                {"Temperatura de Gases", "", ""},
+                {"Temperatura de Agua", "", ""},
+                {"Nivel de Caldera", "", ""},
+                {"Nivel de  Tanq Condensado", "", ""},
+                {"Nivel de Tanq Combustible", "", ""},
         };
         //3
         this.dataTechnical = new String[]{"Carlos Martinez - Santiago Sanchez", "0", "0", "0", "Ivan Fernando Camargo"};
@@ -115,10 +118,10 @@ public class TemplatePDF extends FileProvider{
         };
         //5
         this.dataControlSecurity = new String[][]{
-                {"Control de Presion", "1", ""},
-                {"Termostato", "0", "NA"},
-                {"Warrick( Bajo nivel Aux)", "1", "Se reviso"},
-                {"Modutrol", "1", "Se limpiaron"},
+                {"Control de Presion", "", ""},
+                {"Termostato", "", ""},
+                {"Warrick( Bajo nivel Aux)", "", ""},
+                {"Modutrol", "", ""},
                 {"Control de Modulacion", "2", "OK"},
                 {"Manometros", "1", "Se limpio"},
                 {"Valvulas de seguridad", "1", "Presenta venteo"},
@@ -126,93 +129,93 @@ public class TemplatePDF extends FileProvider{
         };
         //6
         this.dataWaterLevelControl = new String[][]{
-                {"Grifos de Purga", "2", "Presenta fuga de aceite"},
-                {"Vidrio de nivel", "1", "Se reviso"},
-                {"Empaques", "1", "Se reviso"},
-                {"Flotador", "1", "Se limpiaron"},
-                {"Ampolletas o Micros", "1", "OK"},
-                {"Grifos de nivel", "1", "Se limpio"},
+                {"Grifos de Purga", "", ""},
+                {"Vidrio de nivel", "", ""},
+                {"Empaques", "", ""},
+                {"Flotador", "", ""},
+                {"Ampolletas o Micros", "", ""},
+                {"Grifos de nivel", "", ""},
         };
         //6
         this.dataCondensateTank = new String[][]{
-                {"Aspecto general", "1", ""},
-                {"Flotador", "0", "NA"},
-                {"Vidrio de nivel", "1", "Se reviso"},
-                {"Filtro de Agua", "1", "Se limpiaron"},
-                {"Tuberias", "2", "OK"},
-                {"Valvulas ", "1", "Se limpio"},
-                {"Termometro", "1", "Presenta venteo"},
+                {"Aspecto general", "", ""},
+                {"Flotador", "", ""},
+                {"Vidrio de nivel", "", ""},
+                {"Filtro de Agua", "", ""},
+                {"Tuberias", "", ""},
+                {"Valvulas ", "", ""},
+                {"Termometro", "", ""},
         };
         //7
         this.dataWaterPump = new String[][]{
-                {"Aspecto general", "1", ""},
-                {"Acople", "0", "NA"},
-                {"Presion", "1", "Se reviso"},
-                {"Accesorios", "1", "Se limpiaron"},
+                {"Aspecto general", "", ""},
+                {"Acople", "", ""},
+                {"Presion", "", ""},
+                {"Accesorios", "", ""},
         };
         //8
         this.dataSecurityTest = new String[][]{
-                {"Falla de Llama", "1", ""},
-                {"Bajo Nivel Macdonell", "0", "NA"},
-                {"Bajo Nivel Warrick", "1", "Se reviso"},
-                {"Alta Presion", "1", "Se reviso"},
-                {"Baja presion", "2", "OK"},
-                {"Aire de Combustion", "1", "Se limpio"},
-                {"Alta presion de Vapor", "1", "Presenta venteo"},
-                {"Prueba Hidrostatica", "1", "NA"},
-                {"Valvulas de seguridad", "1", "NA"},
-                {"Temperatura (Alta y Baja)", "1", "NA"},
-                {"Otros", "1", "NA"},
+                {"Falla de Llama", "", ""},
+                {"Bajo Nivel Macdonell", "", ""},
+                {"Bajo Nivel Warrick", "", ""},
+                {"Alta Presion", "", ""},
+                {"Baja presion", "", ""},
+                {"Aire de Combustion", "", ""},
+                {"Alta presion de Vapor", "", ""},
+                {"Prueba Hidrostatica", "", ""},
+                {"Valvulas de seguridad", "", ""},
+                {"Temperatura (Alta y Baja)", "", ""},
+                {"Otros", "", ""},
         };
         //9
         this.dataBody = new String[][]{
-                {"Shell", "2", "Presenta fuga de aceite"},
-                {"Camara Humeda", "1", "Se reviso"},
-                {"Camara seca", "1", "Se reviso"},
-                {"Refractarios", "1", "Se limpiaron"},
-                {"Tuberia interna", "1", "OK"},
-                {"Soldaduras", "1", "Se limpio"},
-                {"Tapas Frontal y Trasera", "2", "Presenta venteo"},
-                {"Manhole", "0", "NA"},
-                {"Handhole", "1", ""},
-                {"Empaques", "2", "manometro en valvula dañado"},
-                {"Pintura", "1", "OK"},
-                {"Aislamiento", "1", "OK"}
+                {"Shell", "", ""},
+                {"Camara Humeda", "", ""},
+                {"Camara seca", "", ""},
+                {"Refractarios", "", ""},
+                {"Tuberia interna", "", ""},
+                {"Soldaduras", "", ""},
+                {"Tapas Frontal y Trasera", "", ""},
+                {"Manhole", "", ""},
+                {"Handhole", "", ""},
+                {"Empaques", "", ""},
+                {"Pintura", "", ""},
+                {"Aislamiento", "", ""}
         };
         //10
         this.dataElectricalPanelControl = new String[][]{
-                {"Programador", "2", "Presenta fuga de aceite"},
-                {"Sensor de Llama", "1", "Se reviso"},
-                {"Fotocelda", "1", "Se reviso"},
-                {"Cableado general", "1", "Se limpiaron"},
-                {"Corazas electricas", "1", "OK"},
-                {"Breaker", "1", "Se limpio"},
-                {"Fusibles", "2", "Presenta venteo"},
-                {"Contactores", "0", "NA"},
-                {"Reles", "1", ""},
-                {"Terminales", "2", "manometro en valvula dañado"},
-                {"Organización", "1", "OK"},
-                {"Placas de señalizacion", "1", "OK"},
-                {"Bombillos", "1", "OK"}
+                {"Programador", "", ""},
+                {"Sensor de Llama", "", ""},
+                {"Fotocelda", "", ""},
+                {"Cableado general", "", ""},
+                {"Corazas electricas", "", ""},
+                {"Breaker", "", ""},
+                {"Fusibles", "", ""},
+                {"Contactores", "", ""},
+                {"Reles", "", ""},
+                {"Terminales", "", ""},
+                {"Organización", "", ""},
+                {"Placas de señalizacion", "", ""},
+                {"Bombillos", "", ""}
         };
         //11
         this.dataElectricalMotors = new String[][]{
-                {"Ventilador", "2", "Presenta fuga de aceite"},
-                {"Compresor", "1", "Se reviso"},
-                {"Bomba de Agua", "1", "Se reviso"},
-                {"Bomba de Combustible", "1", "Se limpiaron"},
-                {"Rodamientos", "1", "OK"},
+                {"Ventilador", "", ""},
+                {"Compresor", "", ""},
+                {"Bomba de Agua", "", ""},
+                {"Bomba de Combustible", "", ""},
+                {"Rodamientos", "", ""},
         };
         //12
         this.dataPipesAccessories = new String[][]{
-                {"Aspecto general", "2", "Presenta fuga de aceite"},
-                {"Soporteria", "1", "Se reviso"},
-                {"Aislamiento", "1", "Se reviso"},
-                {"Valvulas", "1", "Se limpiaron"},
-                {"Trampas", "1", "OK"},
-                {"Cheques", "1", "Se limpio"},
-                {"Purgas", "2", "Presenta venteo"},
-                {"Distribuidor", "0", "NA"},
+                {"Aspecto general", "", ""},
+                {"Soporteria", "", ""},
+                {"Aislamiento", "", ""},
+                {"Valvulas", "", ""},
+                {"Trampas", "", ""},
+                {"Cheques", "", ""},
+                {"Purgas", "", ""},
+                {"Distribuidor", "", ""},
         };
         //13
         this.dataObservations = new String[]{
@@ -243,13 +246,9 @@ public class TemplatePDF extends FileProvider{
                 "* La Operación corre por cuenta del cliente",
 
         };
-
-        loadDataBurnerAssembly();
-        //loadDataControlSecurity();
-        loadImages();
     }
-    private void loadDataBurnerAssembly() {
-        String[]namesDataForm={"FuelValve", "Fan", "IgnitionTransformer", "Electrodes", "HighCable", "FuelNozzle", "FuelRegulator", "FuelFilter", "FuelLine", "FuelGauges", "PressureSwich"};
+    public void loadDataBurnerAssembly() {
+        String[]namesDataForm={"M4FuelValve", "M4Fan", "M4IgnitionTransformer", "M4Electrodes", "M4HighCable", "M4FuelNozzle", "M4FuelRegulator", "M4FuelFilter", "M4FuelLine", "M4FuelGauges", "M4PressureSwich"};
         for(int i=0; i<namesDataForm.length; i++){
             dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
 
@@ -270,15 +269,10 @@ public class TemplatePDF extends FileProvider{
 
             //validacion observacion
             this.dataBurnerAssembly[i][2] = dataForm.getString("dataObservationText", "NA");
-
-            boolean addPhoto = dataForm.getBoolean("addPhotoBoolean", false);
-            if(addPhoto){
-                loadPath(dataForm);
-            }
         }
     }
-    private void loadDataControlSecurity() {
-        String[]namesDataForm={"FuelValve", "Fan", "IgnitionTransformer", "Electrodes", "HighCable", "FuelNozzle", "FuelRegulator", "FuelFilter", "FuelLine", "FuelGauges", "PressureSwich"};
+    public void loadDataControlSecurity() {
+        String[]namesDataForm={"M5PressureControl", "M5Thermostat", "M5WarrickLowAuxLevel", "M5Modutrol", "M5ModulationControl", "M5PressureGauges", "M5SafetyValves", "M5SwichAirFan"};
         for(int i=0; i<namesDataForm.length; i++){
             dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
 
@@ -299,14 +293,202 @@ public class TemplatePDF extends FileProvider{
 
             //validacion observacion
             this.dataControlSecurity[i][2] = dataForm.getString("dataObservationText", "NA");
-
-            boolean addPhoto = dataForm.getBoolean("addPhotoBoolean", false);
-            if(addPhoto){
-                loadPath(dataForm);
-            }
         }
     }
-    private void loadPath(SharedPreferences dataForm){
+    public void loadDataWaterLevelControl(){
+        String[]namesDataForm={"M6BleedTaps", "M6LevelGlass", "M6Packaging", "M6Float", "M6AmpoulesMicros", "M6LevelTaps"};
+        for(int i=0; i<namesDataForm.length; i++){
+            dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
+
+            boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
+            boolean btnRPress = dataForm.getBoolean("dataBtnR", false);
+            boolean btnMPress = dataForm.getBoolean("dataBtnM", false);
+
+            //validación botones
+            if(btnBPress){
+                this.dataWaterLevelControl[i][1] = "1";
+            }else if(btnRPress){
+                this.dataWaterLevelControl[i][1] = "2";
+            }else if(btnMPress){
+                this.dataWaterLevelControl[i][1] = "3";
+            }else {
+                this.dataWaterLevelControl[i][1] = "0";
+            }
+
+            //validacion observacion
+            this.dataWaterLevelControl[i][2] = dataForm.getString("dataObservationText", "NA");
+        }
+    }
+    public void loadDataCondensateTank(){
+        String[]namesDataForm={"M7GeneralAspect", "M7FloatModule7", "M7LevelGlass", "M7WaterFilter", "M7Pipelines", "M7Valves", "M7Thermometer"};
+        for(int i=0; i<namesDataForm.length; i++){
+            dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
+
+            boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
+            boolean btnRPress = dataForm.getBoolean("dataBtnR", false);
+            boolean btnMPress = dataForm.getBoolean("dataBtnM", false);
+
+            //validación botones
+            if(btnBPress){
+                this.dataCondensateTank[i][1] = "1";
+            }else if(btnRPress){
+                this.dataCondensateTank[i][1] = "2";
+            }else if(btnMPress){
+                this.dataCondensateTank[i][1] = "3";
+            }else {
+                this.dataCondensateTank[i][1] = "0";
+            }
+
+            //validacion observacion
+            this.dataCondensateTank[i][2] = dataForm.getString("dataObservationText", "NA");
+        }
+    }
+    public void loadDataWaterPump(){
+        String[]namesDataForm={"M8GeneralAspectModule8", "M8Coupling", "M8Pressure", "M8Accessories"};
+        for(int i=0; i<namesDataForm.length; i++){
+            dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
+
+            boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
+            boolean btnRPress = dataForm.getBoolean("dataBtnR", false);
+            boolean btnMPress = dataForm.getBoolean("dataBtnM", false);
+
+            //validación botones
+            if(btnBPress){
+                this.dataWaterPump[i][1] = "1";
+            }else if(btnRPress){
+                this.dataWaterPump[i][1] = "2";
+            }else if(btnMPress){
+                this.dataWaterPump[i][1] = "3";
+            }else {
+                this.dataWaterPump[i][1] = "0";
+            }
+
+            //validacion observacion
+            this.dataWaterPump[i][2] = dataForm.getString("dataObservationText", "NA");
+        }
+    }
+    public void loadDataSecurityTest(){
+        String[]namesDataForm={"M9FlameFailure", "M9MacdonellLowLevel", "M9LowLevelWarrick", "M9High pressure", "M9LowPressure", "M9CombustionAir", "M9HighSteamPressure", "M9HydrostaticTest", "M9SafetyValves", "M9TemperatureHighLow", "M9Others"};
+        for(int i=0; i<namesDataForm.length; i++){
+            dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
+
+            boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
+            boolean btnRPress = dataForm.getBoolean("dataBtnR", false);
+            boolean btnMPress = dataForm.getBoolean("dataBtnM", false);
+
+            //validación botones
+            if(btnBPress){
+                this.dataSecurityTest[i][1] = "1";
+            }else if(btnRPress){
+                this.dataSecurityTest[i][1] = "2";
+            }else if(btnMPress){
+                this.dataSecurityTest[i][1] = "3";
+            }else {
+                this.dataSecurityTest[i][1] = "0";
+            }
+
+            //validacion observacion
+            this.dataSecurityTest[i][2] = dataForm.getString("dataObservationText", "NA");
+        }
+    }
+    public void loadDataBody(){
+        String[]namesDataForm={"M10Shell", "M10WetChamber", "M10DryChamber", "M10Refractories", "M10InternalPiping", "M10Welds", "M10FrontBacKCovers", "M10Manhole", "M10Handhole", "M10Packaging", "M10Painting", "M10Isolation"};
+        for(int i=0; i<namesDataForm.length; i++){
+            dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
+
+            boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
+            boolean btnRPress = dataForm.getBoolean("dataBtnR", false);
+            boolean btnMPress = dataForm.getBoolean("dataBtnM", false);
+
+            //validación botones
+            if(btnBPress){
+                this.dataBody[i][1] = "1";
+            }else if(btnRPress){
+                this.dataBody[i][1] = "2";
+            }else if(btnMPress){
+                this.dataBody[i][1] = "3";
+            }else {
+                this.dataBody[i][1] = "0";
+            }
+
+            //validacion observacion
+            this.dataBody[i][2] = dataForm.getString("dataObservationText", "NA");
+        }
+    }
+    public void loadDataElectricalPanelControl(){
+        String[]namesDataForm={"M11Programmer", "M11FlameSensor", "M11Photocell", "M11GeneralWiring", "M11ElectricShells", "M11Breaker", "M11Fuses", "M11Contactors", "M11Relays", "M11Terminals", "M11Organization", "M11SignalingPlates", "M11LightBulbs"};
+        for(int i=0; i<namesDataForm.length; i++){
+            dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
+
+            boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
+            boolean btnRPress = dataForm.getBoolean("dataBtnR", false);
+            boolean btnMPress = dataForm.getBoolean("dataBtnM", false);
+
+            //validación botones
+            if(btnBPress){
+                this.dataElectricalPanelControl[i][1] = "1";
+            }else if(btnRPress){
+                this.dataElectricalPanelControl[i][1] = "2";
+            }else if(btnMPress){
+                this.dataElectricalPanelControl[i][1] = "3";
+            }else {
+                this.dataElectricalPanelControl[i][1] = "0";
+            }
+
+            //validacion observacion
+            this.dataElectricalPanelControl[i][2] = dataForm.getString("dataObservationText", "NA");
+        }
+    }
+    public void loadDataElectricMotors(){
+        String[]namesDataForm={"M12FanModule12", "M12Compressor", "M12WaterPump", "M12FuelPump", "M12Bearings"};
+        for(int i=0; i<namesDataForm.length; i++){
+            dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
+
+            boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
+            boolean btnRPress = dataForm.getBoolean("dataBtnR", false);
+            boolean btnMPress = dataForm.getBoolean("dataBtnM", false);
+
+            //validación botones
+            if(btnBPress){
+                this.dataElectricalMotors[i][1] = "1";
+            }else if(btnRPress){
+                this.dataElectricalMotors[i][1] = "2";
+            }else if(btnMPress){
+                this.dataElectricalMotors[i][1] = "3";
+            }else {
+                this.dataElectricalMotors[i][1] = "0";
+            }
+
+            //validacion observacion
+            this.dataElectricalMotors[i][2] = dataForm.getString("dataObservationText", "NA");
+        }
+    }
+    public void loadDataPipesAccessories(){
+        String[]namesDataForm={"M13GeneralAspectModule13", "M13Support", "M13IsolationModule13", "M13ValvesModule13", "M13Traps", "M13Checks","M13Purges", "M13Distributor"};
+        for(int i=0; i<namesDataForm.length; i++){
+            dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
+
+            boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
+            boolean btnRPress = dataForm.getBoolean("dataBtnR", false);
+            boolean btnMPress = dataForm.getBoolean("dataBtnM", false);
+
+            //validación botones
+            if(btnBPress){
+                this.dataPipesAccessories[i][1] = "1";
+            }else if(btnRPress){
+                this.dataPipesAccessories[i][1] = "2";
+            }else if(btnMPress){
+                this.dataPipesAccessories[i][1] = "3";
+            }else {
+                this.dataPipesAccessories[i][1] = "0";
+            }
+
+            //validacion observacion
+            this.dataControlSecurity[i][2] = dataForm.getString("dataObservationText", "NA");
+        }
+    }
+
+    public void loadPath(SharedPreferences dataForm){
             if(this.paths==null){
                 int numberPhotos = dataForm.getInt("numberPhotosInt", 0);
                 this.paths= new String[numberPhotos];
@@ -338,15 +520,34 @@ public class TemplatePDF extends FileProvider{
 
         return b;
     }
-    private void loadImages() throws IOException{
+    public void loadImages() throws IOException{
         Bitmap bm;
         Image image;
-            this.images= new Image[this.paths.length];
+            this.images = new Image[this.paths.length];
             for(int i=0; i<paths.length; i++){
                 bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(paths[i]));
                 image = generateImage(bm);
                 images[i]=image;
             }
+    }
+
+    public void loadImages(Bitmap[] bmFinals, boolean[] photosSelected) throws IOException {
+        Image image;
+        int contador=0;
+        for (int j=0; j<photosSelected.length; j++){
+            if(photosSelected[j]){
+                contador++;
+            }
+        }
+        this.images = new Image[contador];
+        contador=0;
+        for(int i=0; i<images.length; i++){
+            if(photosSelected[i]){
+                image = generateImage(bmFinals[i]);
+                images[contador]=image;
+                contador++;
+            }
+        }
     }
     private Image generateImage(Bitmap bm){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -363,16 +564,7 @@ public class TemplatePDF extends FileProvider{
         return img;
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void createFile(){
-        File folder=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "PDF");
-        if(!folder.exists()){
-            folder.mkdir();
-            pdfFile=new File(folder, "TemplatePDF.pdf");
-        }
-        pdfFile=new File(folder, "TemplatePDF.pdf");
-    }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void openDocument(){
+    public void createDocument(){
         createFile();
         try {
             document=new Document(PageSize.A4, 20, 20, 20, 20);
@@ -383,9 +575,20 @@ public class TemplatePDF extends FileProvider{
         }
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void createFile(){
+        File folder=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "PDF");
+        if(!folder.exists()){
+            folder.mkdir();
+            pdfFile=new File(folder, "TemplatePDF.pdf");
+        }
+        pdfFile=new File(folder, "TemplatePDF.pdf");
+    }
+    public void openDocument(){
+        document.open();
+    }
     public void closeDocument(){
         document.close();
-        Toast.makeText(context, "DOCUMENTO GENERADO", Toast.LENGTH_LONG).show();
     }
     public void addMetaData(String title, String subject, String author){
         document.addTitle(title);
@@ -412,13 +615,60 @@ public class TemplatePDF extends FileProvider{
             Log.e("createTable", e.toString());
         }
     }
-    private PdfPTable customizeTabla() throws DocumentException {
+    public void addTable(PdfPTable table) throws DocumentException {
+        document.add(table);
+    }
+    public void addTable2(PdfPTable table) throws DocumentException {
+        document.open();
+        document.add(table);
+    }
+    public PdfPTable customizeTabla() throws DocumentException {
         PdfPTable table = new PdfPTable(10);
         table.setWidths(new float[] { 17, 3, 3, 3, 17, 20, 3,3,3, 19});
         table.setWidthPercentage(100);
         return table;
     }
-    private PdfPTable dataClient(PdfPTable table){
+    public PdfPCell customizeCell(String text, int font, boolean title, boolean center, int rowSpan, int colSpan){
+        PdfPCell cell = new PdfPCell();
+        Paragraph paragraph = new Paragraph();
+        //add text and format
+        if(font==0){
+            paragraph = new Paragraph(text, fTextGenericTitle);
+        }else if(font==1){
+            paragraph = new Paragraph(text, fTextGenericTitle1);
+        }else if(font==2){
+            paragraph = new Paragraph(text, fTextGenericTitle2);
+        }else if(font==3){
+            paragraph = new Paragraph(text, fTextGenericTitle3);
+        }else if(font==4){
+            paragraph = new Paragraph(text, fTextGenericTitle4);
+        }else {
+            paragraph = new Paragraph(text, fTextGenericTitle5);
+        }
+        //add center
+        if(center){
+            paragraph.setAlignment(Element.ALIGN_CENTER);
+        }
+        //add text
+        cell.addElement(paragraph);
+        //add title
+        if(title){
+            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        }
+        //add rowSpan
+        if(rowSpan!=0){
+            cell.setRowspan(rowSpan);
+        }
+        //add colSpan
+        if(colSpan!=0){
+            cell.setColspan(colSpan);
+        }
+        cell.setUseAscender(true);
+        cell.setUseDescender(true);
+        cell.setVerticalAlignment(Element.ALIGN_CENTER);
+        return cell;
+    }
+    public PdfPTable dataClient(PdfPTable table){
         /*
         0 = private Font fTextGenericTitle = new Font(Font.FontFamily.HELVETICA, 11);
         1 = private Font fTextGenericTitle1 = new Font(Font.FontFamily.HELVETICA, 5);
@@ -470,47 +720,7 @@ public class TemplatePDF extends FileProvider{
         }
         return table;
     }
-    private PdfPCell customizeCell(String text, int font, boolean title, boolean center,int rowSpan, int colSpan){
-        PdfPCell cell = new PdfPCell();
-        Paragraph paragraph = new Paragraph();
-        //add text and format
-        if(font==0){
-            paragraph = new Paragraph(text, fTextGenericTitle);
-        }else if(font==1){
-            paragraph = new Paragraph(text, fTextGenericTitle1);
-        }else if(font==2){
-            paragraph = new Paragraph(text, fTextGenericTitle2);
-        }else if(font==3){
-            paragraph = new Paragraph(text, fTextGenericTitle3);
-        }else if(font==4){
-            paragraph = new Paragraph(text, fTextGenericTitle4);
-        }else {
-            paragraph = new Paragraph(text, fTextGenericTitle5);
-        }
-        //add center
-        if(center){
-            paragraph.setAlignment(Element.ALIGN_CENTER);
-        }
-        //add text
-        cell.addElement(paragraph);
-        //add title
-        if(title){
-            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        }
-        //add rowSpan
-        if(rowSpan!=0){
-            cell.setRowspan(rowSpan);
-        }
-        //add colSpan
-        if(colSpan!=0){
-            cell.setColspan(colSpan);
-        }
-        cell.setUseAscender(true);
-        cell.setUseDescender(true);
-        cell.setVerticalAlignment(Element.ALIGN_CENTER);
-        return cell;
-    }
-    private PdfPTable dataModules(PdfPTable table){
+    public PdfPTable dataModules(PdfPTable table){
 
         //6 row
         table = addTitleModule(table,1);
@@ -634,7 +844,7 @@ public class TemplatePDF extends FileProvider{
 
         return table;
     }
-    private PdfPTable dataObservationsRecommendations(PdfPTable table){
+    public PdfPTable dataObservationsRecommendations(PdfPTable table){
         int cModule2=10;
         int cModule14=0;
         int cModule15=0;
@@ -665,17 +875,18 @@ public class TemplatePDF extends FileProvider{
                 rowSpan = ((getLength(14)-(cModule14-1))+getLength(15)+1);
 
                 Paragraph p = new Paragraph();
-                for(int j=0; j<images.length; j++){
-                    Image img = Image.getInstance(images[j]);
-                    img.scaleAbsolute(65, 90);
-                    p.add(new Chunk(img, 0, 0, true));
+                if(images!=null){
+                    for(int j=0; j<images.length; j++){
+                        Image img = Image.getInstance(images[j]);
+                        img.scaleAbsolute(65, 90);
+                        p.add(new Chunk(img, 0, 0, true));
+                    }
                 }
                 PdfPCell cell = new PdfPCell();
                 cell.addElement(p);
                 cell.setColspan(5);
                 cell.setRowspan(rowSpan);
                 table.addCell(cell);
-                //table.addCell(customizeCell("", 3, false, false, rowSpan, 5));
                 cIObservations=i;
             }else if(i<(cIObservations+getLength(14))-2){
                 table.addCell(customizeCell(getData(14, cModule14, 0), 3, false, false, 0, 5));
@@ -690,7 +901,7 @@ public class TemplatePDF extends FileProvider{
         }
         return table;
     }
-    private PdfPTable dataTechnical(PdfPTable table){
+    public PdfPTable dataTechnical(PdfPTable table){
         for (int i = 0; i<=3; i++){
             if(i==0){
                 table.addCell(customizeCell("Nombre del Tecnico", 3, true, true, 0, 5));
@@ -707,7 +918,7 @@ public class TemplatePDF extends FileProvider{
         }
         return table;
     }
-    private PdfPTable dataOthers(PdfPTable table){
+    public PdfPTable dataOthers(PdfPTable table){
         table.addCell(customizeCell("Aceptado:", 3, true, true, 0, 5));
         table.addCell(customizeCell("SELLO DE ACEPTACION", 0, false, false, 0, 5));
 
@@ -834,5 +1045,8 @@ public class TemplatePDF extends FileProvider{
             return pdfFile;
         }
         return null;
+    }
+    public void setSignature(Bitmap signature) {
+        this.signature = signature;
     }
 }

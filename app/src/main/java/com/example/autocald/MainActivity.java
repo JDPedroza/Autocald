@@ -18,9 +18,12 @@ import android.widget.Toast;
 
 import com.example.autocald.controller.activity.MainActivityController;
 import com.example.autocald.ui.conditionBoilerElements.MainConditionBoilerElements;
-import com.example.autocald.ui.dataClient.DataClient;
+import com.example.autocald.ui.maintenanceData.computerData.ComputerData;
+import com.example.autocald.ui.maintenanceData.dataClient.DataClient;
 import com.example.autocald.ui.digitalSignature.DigitalSignature;
 import com.example.autocald.ui.documentGeneration.DocumentGeneration;
+import com.example.autocald.ui.maintenanceData.technicalData.TechnicalData;
+import com.example.autocald.ui.photoManagement.PhotoManagement;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -50,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
 
     //importamos todas las clases de nav
     private DataClient dataClient = null;
+    private ComputerData computerData = null;
+    private TechnicalData technicalData = null;
     private MainConditionBoilerElements mainConditionBoilerElements = null;
+    private PhotoManagement photoManagement = null;
     private DigitalSignature digitalSignature = null;
     private DocumentGeneration documentGeneration =null;
     private FloatingActionButton fab = null;
@@ -58,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
     //btn
     File mAbsoluteFile;
     final int PHOTO_CONST = 1;
+
+    //variables PhotoManagement
+    private Bitmap[] bmFinals;
+    private boolean[] photosSelected;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -112,17 +122,21 @@ public class MainActivity extends AppCompatActivity {
                 if(item.getItemId()==R.id.nav_data_client){
                     MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), dataClient = new DataClient());
                     toolbar.setTitle(R.string.menu_customer_data);
+                    fab.hide();
                     drawer.closeDrawers();
                 }
                 //dataComputer
                 if(item.getItemId()==R.id.nav_computer_data){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), digitalSignature = new DigitalSignature());
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), computerData = new ComputerData());
                     toolbar.setTitle(R.string.menu_equipment_data);
+                    fab.hide();
                     drawer.closeDrawers();
                 }
                 //dataTechnical
                 if(item.getItemId()==R.id.nav_technical_data){
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), technicalData = new TechnicalData());
                     toolbar.setTitle(R.string.menu_technician_data);
+                    fab.hide();
                     drawer.closeDrawers();
                 }
                 //burnerAssembly
@@ -150,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 if(item.getItemId()==R.id.nav_condensate_tank){
                     MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(7));
                     toolbar.setTitle(R.string.menu_condensate_tank);
-
+                    fab.show();
                     drawer.closeDrawers();
                 }
                 //WaterPump
@@ -193,23 +207,38 @@ public class MainActivity extends AppCompatActivity {
                     toolbar.setTitle(R.string.menu_pipes_accessories);
                     drawer.closeDrawers();
                 }
-                //ObservationsRecommendations
-                if(item.getItemId()==R.id.nav_observations_recommendations){
-
-                    toolbar.setTitle(R.string.menu_observations_recommendations);
+                //Observations
+                if(item.getItemId()==R.id.nav_observation){
+                    fab.hide();
+                    toolbar.setTitle(R.string.menu_observations);
+                    drawer.closeDrawers();
+                }
+                //Recommendations
+                if(item.getItemId()==R.id.nav_recommendations){
+                    fab.hide();
+                    toolbar.setTitle(R.string.menu_recommendation);
                     drawer.closeDrawers();
                 }
                 //PhotoManagement
                 if(item.getItemId()==R.id.nav_photo_management){
-
-                    toolbar.setTitle(R.string.menu_customer_data);
+                    if(bmFinals!=null){
+                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), photoManagement = new PhotoManagement(bmFinals, photosSelected));
+                    }else {
+                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), photoManagement = new PhotoManagement());
+                    }
+                    fab.hide();
+                    toolbar.setTitle(R.string.menu_photo_management);
                     drawer.closeDrawers();
                 }
                 //DocumentGeneration
                 if(item.getItemId()==R.id.nav_document_generation){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration());
-                    MainActivityController.Companion.addFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), digitalSignature = new DigitalSignature());
+                    if(bmFinals!=null){
+                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration(bmFinals, photosSelected));
+                    }else{
+                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration());
+                    }
                     //initializeButtonGenerate();
+                    fab.hide();
                     toolbar.setTitle(R.string.menu_document_generation);
                     drawer.closeDrawers();
                 }
@@ -250,9 +279,18 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    public void addFragment(){
+        MainActivityController.Companion.addFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), digitalSignature = new DigitalSignature());
+    }
+
     public void removeFragment(Bitmap signature){
         MainActivityController.Companion.removeFragment(getSupportFragmentManager(), digitalSignature);
         documentGeneration.setSignature(signature);
+    }
+
+    public void saveDataPhotoManagement(Bitmap[] bmFinals, boolean[] photosSelected){
+        this.bmFinals = bmFinals;
+        this.photosSelected = photosSelected;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -298,8 +336,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        Toast.makeText(this, "Prueba", Toast.LENGTH_SHORT).show();
-    }
 }

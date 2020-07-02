@@ -32,34 +32,34 @@ public class MainConditionBoilerElements extends Fragment{
     public MainConditionBoilerElements(int module) {
         if(module==4){
             this.title = new String[]{"Valvula de Combustible", "Ventilador", "Trasformador de Ignicion", "Electrodos", "Cable de Alta", "Boquilla de combustible", "Reguladora de Combustible", "Filtro de combustible", "Tuberia de combustible", "Manometros de Combustible", "Swich de Presion"};
-            this.dataForm = new String[]{"FuelValve", "Fan", "IgnitionTransformer", "Electrodes", "HighCable", "FuelNozzle", "FuelRegulator", "FuelFilter", "FuelLine", "FuelGauges", "PressureSwich"};
+            this.dataForm = new String[]{"M4FuelValve", "M4Fan", "M4IgnitionTransformer", "M4Electrodes", "M4HighCable", "M4FuelNozzle", "M4FuelRegulator", "M4FuelFilter", "M4FuelLine", "M4FuelGauges", "M4PressureSwich"};
         }else if(module==5){
             this.title = new String[]{"Control de Presion", "Termostato", "Warrick( Bajo nivel Aux)", "Modutrol", "Control de Modulacion", "Manometros", "Valvulas de seguridad", "Swich de Aire Ventilador"};
-            this.dataForm = new String[]{"PressureControl", "Thermostat", "WarrickLowAuxLevel", "Modutrol", "ModulationControl", "PressureGauges", "SafetyValves", "SwichAirFan"};
+            this.dataForm = new String[]{"M5PressureControl", "M5Thermostat", "M5WarrickLowAuxLevel", "M5Modutrol", "M5ModulationControl", "M5PressureGauges", "M5SafetyValves", "M5SwichAirFan"};
         }else if(module==6){
             this.title = new String[]{"Grifos de Purga", "Vidrio de nivel", "Empaques", "Flotador", "Ampolletas o Micros", "Grifos de nivel"};
-            this.dataForm = new String[]{"BleedTaps", "LevelGlass", "Packaging", "Float", "AmpoulesMicros", "LevelTaps"};
+            this.dataForm = new String[]{"M6BleedTaps", "M6LevelGlass", "M6Packaging", "M6Float", "M6AmpoulesMicros", "M6LevelTaps"};
         }else if(module==7){
             this.title = new String[]{"Aspecto General", "Flotador", "Vidrio de nivel", "Filtro de Agua", "Tuberias", "Valvulas", "Termometro"};
-            this.dataForm = new String[]{"GeneralAspect", "FloatModule7", "LevelGlass", "WaterFilter", "Pipelines", "Valves", "Thermometer"};
+            this.dataForm = new String[]{"M7GeneralAspect", "M7FloatModule7", "M7LevelGlass", "M7WaterFilter", "M7Pipelines", "M7Valves", "M7Thermometer"};
         }else if(module==8){
             this.title = new String[]{"Aspecto General", "Acople", "Presion", "Accesorios"};
-            this.dataForm = new String[]{"GeneralAspectModule8", "Coupling", "Pressure", "Accessories"};
+            this.dataForm = new String[]{"M8GeneralAspectModule8", "M8Coupling", "M8Pressure", "M8Accessories"};
         }else if(module==9){
             this.title = new String[]{"Falla de Llama", "Bajo Nivel Macdonell", "Bajo Nivel Warrick", "Alta Presion", "Baja Presion", "Aire de Combustion", "Alta presion de Vapor", "Prueba Hidrostatica", "Valvulas de Seguridad", "Temperatura (Alta y Baja)", "Otros"};
-            this.dataForm = new String[]{"FlameFailure", "MacdonellLowLevel", "LowLevelWarrick", "High pressure", "LowPressure", "CombustionAir", "HighSteamPressure", "HydrostaticTest", "SafetyValves", "TemperatureHighLow", "Others"};
+            this.dataForm = new String[]{"M9FlameFailure", "M9MacdonellLowLevel", "M9LowLevelWarrick", "M9High pressure", "M9LowPressure", "M9CombustionAir", "M9HighSteamPressure", "M9HydrostaticTest", "M9SafetyValves", "M9TemperatureHighLow", "M9Others"};
         }else if(module==10){
             this.title = new String[]{"Shell", "Camara Humeda", "Camara Seca", "Refractarios", "Tuberia interna", "Soldaduras", "Tapas Frontal y Trasera", "Manhole", "Handhole", "Empaques", "Pintura ", "Aislamiento"};
-            this.dataForm = new String[]{"Shell", "WetChamber", "DryChamber", "Refractories", "InternalPiping", "Welds", "FrontBacKCovers", "Manhole", "Handhole", "Packaging", "Painting", "Isolation"};
+            this.dataForm = new String[]{"M10Shell", "M10WetChamber", "M10DryChamber", "M10Refractories", "M10InternalPiping", "M10Welds", "M10FrontBacKCovers", "M10Manhole", "M10Handhole", "M10Packaging", "M10Painting", "M10Isolation"};
         }else if(module==11){
             this.title = new String[]{"Programador", "Sensor de Llama", "Fotocelda", "Cableado General", "Corazas Electricas", "Breaker", "Fusibles", "Contactores", "Reles", "Terminales", "Organización ", "Placas de Señalizacion", "Bombillos"};
-            this.dataForm = new String[]{"Programmer", "FlameSensor", "Photocell", "GeneralWiring", "ElectricShells", "Breaker", "Fuses", "Contactors", "Relays", "Terminals", "Organization", "SignalingPlates", "LightBulbs"};
+            this.dataForm = new String[]{"M11Programmer", "M11FlameSensor", "M11Photocell", "M11GeneralWiring", "M11ElectricShells", "M11Breaker", "M11Fuses", "M11Contactors", "M11Relays", "M11Terminals", "M11Organization", "M11SignalingPlates", "M11LightBulbs"};
         }else if(module==12){
             this.title = new String[]{"Ventilador", "Compresor", "Bomba de Agua", "Bomba de Combustible", "Rodamientos"};
-            this.dataForm = new String[]{"FanModule12", "Compressor", "WaterPump", "FuelPump", "Bearings"};
+            this.dataForm = new String[]{"M12FanModule12", "M12Compressor", "M12WaterPump", "M12FuelPump", "M12Bearings"};
         }else{
             this.title = new String[]{"Aspecto General", "Soporteria", "Aislamiento", "Valvulas", "Trampas", "Cheques", "Purgas", "Distribuidor"};
-            this.dataForm = new String[]{"GeneralAspectModule13", "Support", "IsolationModule13", "ValvesModule13", "Traps", "Checks","Purges", "Distributor"};
+            this.dataForm = new String[]{"M13GeneralAspectModule13", "M13Support", "M13IsolationModule13", "M13ValvesModule13", "M13Traps", "M13Checks","M13Purges", "M13Distributor"};
         }
     }
 

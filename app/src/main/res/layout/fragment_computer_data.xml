@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_Vapor_Pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_vapor_pressure"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Vapor_Pressure_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Vapor_Pressure_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Air_Atomization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_air_atomization"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Air_Atomization_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Air_Atomization_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Steam_Atomization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_steam_atomization"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Steam_Atomization_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Steam_Atomization_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Fuel_Temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_fuel_temperature"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Fuel_Temperature_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Fuel_Temperature_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Line_Gas_Pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_line_gas_pressure"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Fuel_Pressure_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Fuel_Pressure_Observetion"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Gas_Train_Pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_gas_train_pressure"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Line_Gas_Pressure_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Line_Gas_Pressure_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Gas_Temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_gas_temperature"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Gas_Train_Pressure_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Gas_Train_Pressure_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Water_Temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_water_temperature"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Gas_Temperature_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Gas_Temperature_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Boiler_Level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_boiler_level"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Boiler_Level_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Boiler_Level_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Condensate_Tank_Level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_condensate_tank_level"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Condensate_Tank_Level_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Condensate_Tank_Level_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Fuel_Tank_Level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_fuel_tank_level"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Fuel_Tank_Level_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Fuel_Tank_Level_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

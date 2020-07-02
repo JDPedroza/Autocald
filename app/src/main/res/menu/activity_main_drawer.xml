@@ -67,9 +67,13 @@
     <item android:title="@string/title_extras">
         <menu>
             <item
-                android:id="@+id/nav_observations_recommendations"
-                android:icon="@drawable/ic_menu_observations_recommendations"
-                android:title="@string/menu_observations_recommendations" />
+                android:id="@+id/nav_observation"
+                android:icon="@drawable/ic_menu_observation"
+                android:title="@string/menu_observations"/>
+            <item
+                android:id="@+id/nav_recommendations"
+                android:icon="@drawable/ic_menu_recommendations"
+                android:title="@string/menu_recommendation" />
             <item
                 android:id="@+id/nav_photo_management"
                 android:icon="@drawable/ic_menu_photo_management"
