@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.photoManagement.PhotoManagement">
+    tools:context=".ui.additionalFeatures.PhotoManagement">
 
     <LinearLayout
         android:id="@+id/layoutGrid"
@@ -20,8 +20,12 @@
             android:layout_height="match_parent"
             android:columnWidth="90dp"
             android:gravity="center"
-            android:horizontalSpacing="10dp"
+            android:horizontalSpacing="5dp"
             android:numColumns="3"
+            android:paddingTop="10dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
             android:stretchMode="columnWidth"
             android:verticalSpacing="10dp"
             app:layout_constraintEnd_toEndOf="parent"

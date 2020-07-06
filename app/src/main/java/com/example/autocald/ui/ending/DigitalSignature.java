@@ -1,4 +1,4 @@
-package com.example.autocald.ui.digitalSignature;
+package com.example.autocald.ui.ending;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;

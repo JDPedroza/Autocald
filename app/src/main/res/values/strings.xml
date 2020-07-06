@@ -88,6 +88,14 @@
     <string name="title_time_total">Horas Hombre</string>
     <string name="text_time">0</string>
 
+    <!--Formulario Observaciones-->
+    <string name="title_observations">Observaciones</string>
+    <string name="button_add_observations">Agregar</string>
+    <string name="button_remove_observations">Remover</string>
+
+    <!--Formulario Observaciones-->
+    <string name="title_recommendations">Recomendaciones</string>
+
     <!--Formulario Adminstrar Fotos-->
     <string name="button_apply">Aplicar Cambios</string>
     <string name="load_data">Cargando información</string>

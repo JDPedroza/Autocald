@@ -1,13 +1,12 @@
 package com.example.autocald.utilities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
@@ -33,13 +32,12 @@ import java.io.IOException;
 
 import com.example.autocald.R;
 
+@SuppressLint("Registered")
 public class TemplatePDF extends FileProvider{
     private Context context;
     private Bitmap signature;
     private File pdfFile;
     private Document document;
-    private PdfWriter pdfWriter;
-    private String[]paths;
     private Image[]images;
     //List Format
     private Font fTextGenericTitle = new Font(Font.FontFamily.HELVETICA, 11);
@@ -67,24 +65,13 @@ public class TemplatePDF extends FileProvider{
     //DB
     SharedPreferences dataForm;
     //builder
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public TemplatePDF(Context context, Bitmap signature){
-        this.context=context;
-        this.signature = signature;
-        loadData();
-        createDocument();
-        addMetaData("clientes", "ventas", "Johan");
-        createTable();
-        closeDocument();
-    }
     public TemplatePDF(Context context){
         this.context=context;
     }
-
     //metodos
     public void loadData(){
         //1
-        this.dataClient = new String[]{"366", "13/09/2019", "Mant General y Correctivo", "ALSAEM", "80 BHP", "DISTRAL"};
+        this.dataClient = new String[]{"", "", "", "", "", ""};
         //2
         this.dataComputer = new String[][]{
                 {"Presion de Vapor", "", ""},
@@ -122,10 +109,10 @@ public class TemplatePDF extends FileProvider{
                 {"Termostato", "", ""},
                 {"Warrick( Bajo nivel Aux)", "", ""},
                 {"Modutrol", "", ""},
-                {"Control de Modulacion", "2", "OK"},
-                {"Manometros", "1", "Se limpio"},
-                {"Valvulas de seguridad", "1", "Presenta venteo"},
-                {"Swich de Aire Ventilador", "1", "NA"},
+                {"Control de Modulacion", "", ""},
+                {"Manometros", "", ""},
+                {"Valvulas de seguridad", "", ""},
+                {"Swich de Aire Ventilador", "", ""},
         };
         //6
         this.dataWaterLevelControl = new String[][]{
@@ -219,33 +206,56 @@ public class TemplatePDF extends FileProvider{
         };
         //13
         this.dataObservations = new String[]{
-                "* Se realizo Mantenimiento General, deshollinado y lavado interno",
-                "*se reviso el sistema de gas natural , valvulas, swich de presion",
-                "*Seinstalaron impelentes pero faltan algunos ya dañados",
-                "* Se realizo mto a Macdonell y se cambio juego de nivel empa",
-                "* Se bajo la unidad de encendido para mantenimiento",
-                "* Se limpio fotocelda y demas elementos de encendido",
-                "*Se reparo la tapa de manhole ya tenia desgaste",
-                "* Se cambiaron los empaques de Hadhole ",
-                "* Se cambiaro los empaques de Macdonell y gjuego de nivel",
-                "* Se pinto el cuerpo y demas elementos de control",
-                "*Se realizo ",
-                "* se realizo analises de gases y calibracion de combustion",
-                "* se pinto el cuerpo y controles",
-                "* Se realizaron pruebas de seguridad.",
-                "*Falla de llama, bajo nivel,alta baja presion de gas, aire de combustion.",
-
+                "",
+                "",
+                "",
+                "",
+                ""
         };
         this.dataRecommendations = new String[]{
-                "*Se recominda cambio de control de modulacion, impelentes",
-                "* se recomienda cambio de manometros de presion de gas",
-                "* se recomienda cambio de valvula de purga",
-                "* se recomienda en un futuro cambio de regulador de gas",
-                "* se recomienda realizar mantenimiento periodico y purgas",
-                "* La caldera queda operando en perfectas condiciones",
-                "* La Operación corre por cuenta del cliente",
-
+                "",
         };
+    }
+    public void loadDataClient(){
+        dataForm = context.getSharedPreferences("M1DataClient", Context.MODE_PRIVATE);
+        this.dataClient[0]=dataForm.getString("serviceControl", "");
+        this.dataClient[1]=dataForm.getString("serviceDate", "00/00/00");
+        this.dataClient[2]=dataForm.getString("serviceTypeText", "Mant General y Correctivo");
+        this.dataClient[3]=dataForm.getString("serviceClient", "");
+        this.dataClient[4]=dataForm.getString("serviceCapacity", "");
+        this.dataClient[5]=dataForm.getString("serviceModel", "");
+    }
+    public void loadDataComputer(){
+        dataForm = context.getSharedPreferences("M2DataComputer", Context.MODE_PRIVATE);
+        this.dataComputer[0][1]=dataForm.getString("editText_Vapor_Pressure_Value", "");
+        this.dataComputer[0][2]=dataForm.getString("editText_Vapor_Pressure_Observation", "");
+        this.dataComputer[1][1]=dataForm.getString("editText_Air_Atomization_Value", "");
+        this.dataComputer[1][2]=dataForm.getString("editText_Air_Atomization_Observation", "");
+        this.dataComputer[2][1]=dataForm.getString("editText_Steam_Atomization_Value", "");
+        this.dataComputer[2][2]=dataForm.getString("editText_Steam_Atomization_Observation", "");
+        this.dataComputer[3][1]=dataForm.getString("editText_Fuel_Temperature_Value", "");
+        this.dataComputer[3][2]=dataForm.getString("editText_Fuel_Temperature_Observation", "");
+        this.dataComputer[4][1]=dataForm.getString("editText_Fuel_Pressure_Value", "");
+        this.dataComputer[4][2]=dataForm.getString("editText_Fuel_Pressure_Observation", "");
+        this.dataComputer[5][1]=dataForm.getString("editText_Line_Gas_Pressure_Value", "");
+        this.dataComputer[5][2]=dataForm.getString("editText_Line_Gas_Pressure_Observation", "");
+        this.dataComputer[6][1]=dataForm.getString("editText_Gas_Train_Pressure_Value", "");
+        this.dataComputer[6][2]=dataForm.getString("editText_Gas_Train_Pressure_Observation", "");
+        this.dataComputer[7][1]=dataForm.getString("editText_Gas_Temperature_Value", "");
+        this.dataComputer[7][2]=dataForm.getString("editText_Gas_Temperature_Observation", "");
+        this.dataComputer[8][1]=dataForm.getString("editText_Boiler_Level_Value", "");
+        this.dataComputer[8][2]=dataForm.getString("editText_Boiler_Level_Observation", "");
+        this.dataComputer[9][1]=dataForm.getString("editText_Condensate_Tank_Level_Value", "");
+        this.dataComputer[9][2]=dataForm.getString("editText_Condensate_Tank_Level_Observation", "");
+        this.dataComputer[10][1]=dataForm.getString("editText_Vapor_Pressure_Value", "");
+        this.dataComputer[10][2]=dataForm.getString("editText_Fuel_Tank_Level_Observation", "");
+    }
+    public void loadDataTechnical(){
+        //{"Carlos Martinez - Santiago Sanchez", "0", "0", "0", "Ivan Fernando Camargo"};
+        dataForm = context.getSharedPreferences("M3dataTechnical", Context.MODE_PRIVATE);
+        this.dataTechnical[0]=dataForm.getString("nameTechnical", "");
+        this.dataTechnical[1]=dataForm.getString("timeStart", "0:00");
+        this.dataTechnical[2]=dataForm.getString("timeEnd", "0:00");
     }
     public void loadDataBurnerAssembly() {
         String[]namesDataForm={"M4FuelValve", "M4Fan", "M4IgnitionTransformer", "M4Electrodes", "M4HighCable", "M4FuelNozzle", "M4FuelRegulator", "M4FuelFilter", "M4FuelLine", "M4FuelGauges", "M4PressureSwich"};
@@ -487,55 +497,40 @@ public class TemplatePDF extends FileProvider{
             this.dataControlSecurity[i][2] = dataForm.getString("dataObservationText", "NA");
         }
     }
-
-    public void loadPath(SharedPreferences dataForm){
-            if(this.paths==null){
-                int numberPhotos = dataForm.getInt("numberPhotosInt", 0);
-                this.paths= new String[numberPhotos];
-                for (int i=0; i<numberPhotos; i++){
-                    this.paths[i] = dataForm.getString("pathPhoto"+(i+1)+"Text", "");
+    public void loadDataObservations(){
+        dataForm = context.getSharedPreferences("M14observations", Context.MODE_PRIVATE);
+        boolean generateChange = dataForm.getBoolean("generateChange", false);
+        if(generateChange){
+            int numberChange = dataForm.getInt("numberChange", 1);
+            if(numberChange<=5){
+                for (int i=0; i<numberChange; i++) {
+                    this.dataObservations[i] = dataForm.getString("observationNumber"+i, "");
                 }
             }else{
-                int j=0;
-                int lastNumberPhotos = paths.length;
-                int numberPhotos = lastNumberPhotos + dataForm.getInt("numberPhotosInt", 0);;
-                this.paths= resizeArray(numberPhotos, this.paths);
-                for (int i=lastNumberPhotos; i<numberPhotos; i++){
-                    this.paths[i] = dataForm.getString("pathPhoto"+(j+1)+"Text", "");
-                    j++;
+                this.dataObservations = new String[numberChange];
+                for (int i=0; i<numberChange; i++) {
+                    this.dataObservations[i] = dataForm.getString("observationNumber"+i, "");
                 }
             }
 
+        }
     }
-    public static String[] resizeArray(int resize, String[] a) {
-
-        String[] b = new String[resize];
-        /* 1ºArg: Array origen,
-         * 2ºArg: Por donde comienza a copiar en el origen
-         * 3ºArg: Array destino
-         * 4ºArg: Por donde comienza a pegar en el destino
-         * 5ºArg: Numero de elementos que copiara del origen
-         */
-        System.arraycopy(a, 0, b, 0, a.length);
-
-        return b;
-    }
-    public void loadImages() throws IOException{
-        Bitmap bm;
-        Image image;
-            this.images = new Image[this.paths.length];
-            for(int i=0; i<paths.length; i++){
-                bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(paths[i]));
-                image = generateImage(bm);
-                images[i]=image;
+    public void loadDataRecommendations(){
+        dataForm = context.getSharedPreferences("M15Recommendations", Context.MODE_PRIVATE);
+        boolean generateChange = dataForm.getBoolean("generateChange", false);
+        if(generateChange){
+            int numberChange = dataForm.getInt("numberChange", 1);
+            this.dataRecommendations = new String[numberChange];
+            for (int i=0; i<numberChange; i++) {
+                this.dataRecommendations[i] = dataForm.getString("recommendationNumber"+i, "");
             }
+        }
     }
-
-    public void loadImages(Bitmap[] bmFinals, boolean[] photosSelected) throws IOException {
+    public void loadImages(Bitmap[] bmFinals, boolean[] photosSelected){
         Image image;
         int contador=0;
-        for (int j=0; j<photosSelected.length; j++){
-            if(photosSelected[j]){
+        for (boolean b : photosSelected) {
+            if (b) {
                 contador++;
             }
         }
@@ -568,7 +563,7 @@ public class TemplatePDF extends FileProvider{
         createFile();
         try {
             document=new Document(PageSize.A4, 20, 20, 20, 20);
-            pdfWriter=PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
             document.open();
         }catch (Exception e){
             Log.e("OpenDocument", e.toString());
@@ -584,9 +579,6 @@ public class TemplatePDF extends FileProvider{
         }
         pdfFile=new File(folder, "TemplatePDF.pdf");
     }
-    public void openDocument(){
-        document.open();
-    }
     public void closeDocument(){
         document.close();
     }
@@ -595,31 +587,7 @@ public class TemplatePDF extends FileProvider{
         document.addSubject(subject);
         document.addAuthor(author);
     }
-    public void createTable(){
-        try {
-            PdfPTable table = customizeTabla();
-            //1 - 4
-            table = dataClient(table);
-            //5 row
-            table.addCell(customizeCell("ESTADO DE LOS ELEMENTOS DE LA CALDERA", 0, true, true, 0, 10));
-            //6-58
-            table = dataModules(table);
-            //59-relativo
-            table = dataObservationsRecommendations(table);
-            //relativo+4
-            table = dataTechnical(table);
-            //+2
-            table = dataOthers(table);
-            document.add(table);
-        }catch (Exception e){
-            Log.e("createTable", e.toString());
-        }
-    }
     public void addTable(PdfPTable table) throws DocumentException {
-        document.add(table);
-    }
-    public void addTable2(PdfPTable table) throws DocumentException {
-        document.open();
         document.add(table);
     }
     public PdfPTable customizeTabla() throws DocumentException {
@@ -928,7 +896,7 @@ public class TemplatePDF extends FileProvider{
         cell.setColspan(5);
         cell.setRowspan(3);
         table.addCell(cell);
-        table.addCell(customizeCell("Prueba", 0, false, false, 3, 5));
+        table.addCell(customizeCell("", 0, false, false, 3, 5));
         return table;
     }
     private String getData(int module, int i, int j){

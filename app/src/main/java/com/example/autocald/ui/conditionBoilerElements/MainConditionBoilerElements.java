@@ -1,5 +1,7 @@
 package com.example.autocald.ui.conditionBoilerElements;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -26,8 +28,7 @@ public class MainConditionBoilerElements extends Fragment{
 
     private String[]title;
     private String[]dataForm;
-
-    private TextView[] dots;
+    private int numberFragment;
 
     public MainConditionBoilerElements(int module) {
         if(module==4){
@@ -91,7 +92,7 @@ public class MainConditionBoilerElements extends Fragment{
 
     //metodo para cargar las pantallas
 
-    public void loadViewPager(){
+    private void loadViewPager(){
         adapter = new ViewPagerAdapterController(getChildFragmentManager());
         for(int i=0; i<title.length; i++){
             adapter.addFragment(newInstance(title[i], dataForm[i]), i);
@@ -112,11 +113,11 @@ public class MainConditionBoilerElements extends Fragment{
     }
 
     private void addDots(int currentPage){
-        dots=new TextView[title.length];
+        TextView[] dots = new TextView[title.length];
         dotLayout.removeAllViews();
 
-        for(int i=0; i<dots.length; i++){
-            dots[i]=new TextView(getActivity().getApplicationContext());
+        for(int i = 0; i< dots.length; i++){
+            dots[i]=new TextView(requireActivity().getApplicationContext());
             dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(35);
             if(i==currentPage){
@@ -128,7 +129,8 @@ public class MainConditionBoilerElements extends Fragment{
         }
     }
 
-    ViewPager.OnPageChangeListener pagerListener=new ViewPager.OnPageChangeListener() {
+    private ViewPager.OnPageChangeListener pagerListener=new ViewPager.OnPageChangeListener() {
+
         @Override
         public void onPageScrolled(int i, float v, int i1) {
 
@@ -136,6 +138,7 @@ public class MainConditionBoilerElements extends Fragment{
 
         @Override
         public void onPageSelected(int position) {
+            numberFragment = position;
             addDots(position);
         }
 
@@ -147,6 +150,30 @@ public class MainConditionBoilerElements extends Fragment{
 
     public void resetForm(){
         adapter.resetFragment((SliderFragment) adapter.getCurrentFragment());
+    }
+
+    public void resetModule(){
+        Fragment fragment;
+        if(numberFragment==0){
+            fragment = adapter.getItem(numberFragment+1);
+            adapter.resetFragment((SliderFragment) fragment);
+        }else if(numberFragment == adapter.getCount()-1){
+            fragment = adapter.getItem(numberFragment-1);
+            adapter.resetFragment((SliderFragment) fragment);
+        }else{
+            fragment = adapter.getItem(numberFragment-1);
+            adapter.resetFragment((SliderFragment) fragment);
+            fragment = adapter.getItem(numberFragment+1);
+            adapter.resetFragment((SliderFragment) fragment);
+        }
+        fragment = adapter.getItem(numberFragment);
+        adapter.resetFragment((SliderFragment) fragment);
+        for (String s : dataForm) {
+            SharedPreferences eDataForm = requireContext().getSharedPreferences(s, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = eDataForm.edit();
+            editor.clear();
+            editor.apply();
+        }
     }
 
     public void addPhoto(String path){

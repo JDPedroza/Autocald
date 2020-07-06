@@ -26,15 +26,15 @@ import com.example.autocald.R;
 public class SliderFragment extends Fragment {
 
     //creamos elementos de tipo vista imagen y texto
-    View view;
-    TextView title, number_photos;
-    Button btnB, btnR, btnM;
-    Spinner spinnerObservations;
-    EditText observation;
-    SharedPreferences dataForm;
+    private View view;
+    private TextView title, number_photos;
+    private Button btnB, btnR, btnM;
+    private Spinner spinnerObservations;
+    private EditText observation;
+    private SharedPreferences dataForm;
 
-    int numberPhotos=0;
-    String path="";
+    private int numberPhotos=0;
+    private String path="";
 
     // Interfaz Actualizar
     public interface Actualizar{
@@ -196,8 +196,6 @@ public class SliderFragment extends Fragment {
         });
 
         getForm(getArguments().getString("dataForm"));
-
-
     }
 
     private void createForm(String name){
@@ -305,6 +303,7 @@ public class SliderFragment extends Fragment {
         number_photos.setText(dataNumberPhotosText);
     }
 
+    @SuppressLint("SetTextI18n")
     public void resetFrom(){
         btnB.setBackgroundResource(R.drawable.style_btn_unselected);
         btnB.setTextColor(getResources().getColor(R.color.btnUnselected));
@@ -316,8 +315,14 @@ public class SliderFragment extends Fragment {
         spinnerObservations.setSelection(0);
 
         observation.setText("NA");
+
+        number_photos.setText("No se han añadido fotos");
+        SharedPreferences.Editor editor= dataForm.edit();
+        editor.clear();
+        editor.apply();
     }
 
+    @SuppressLint("SetTextI18n")
     public void addPhoto(String path){
         numberPhotos++;
         number_photos.setText(numberPhotos + " foto(s) añadida");

@@ -1,4 +1,4 @@
-package com.example.autocald.ui.documentGeneration;
+package com.example.autocald.ui.ending;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -35,19 +35,13 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPTable;
 
-import java.io.IOException;
-
 public class DocumentGeneration extends Fragment {
 
     private TemplatePDF templatePDF;
-    private Button btnGenerate;
-    private Button btnSing;
-    private Button btnSend;
     private Bitmap signature;
     private PDFView pdfView;
     private ProgressBar progressBar;
     private TextView progressTextInformation;
-    private LinearLayout layoutPdfView;
     private PdfPTable table;
     private Bitmap[] bmFinals;
     private boolean[] photosSelected;
@@ -67,17 +61,18 @@ public class DocumentGeneration extends Fragment {
         return inflater.inflate(R.layout.fragment_document_generation, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnGenerate = view.findViewById(R.id.btnGenerate);
-        btnSing = view.findViewById(R.id.btnSing);
-        btnSend = view.findViewById(R.id.btnSend);
+        Button btnGenerate = view.findViewById(R.id.btnGenerate);
+        Button btnSing = view.findViewById(R.id.btnSing);
+        Button btnSend = view.findViewById(R.id.btnSend);
         pdfView = view.findViewById(R.id.pdfView);
         progressBar = view.findViewById(R.id.indeterminateBar);
         progressBar.setVisibility(View.GONE);
         progressTextInformation = view.findViewById(R.id.progress_text_information);
-        layoutPdfView = view.findViewById(R.id.layoutPdfView);
+        LinearLayout layoutPdfView = view.findViewById(R.id.layoutPdfView);
         ViewGroup.LayoutParams params = layoutPdfView.getLayoutParams();
         params.height = maxHeight();
         layoutPdfView.setLayoutParams(params);
@@ -96,7 +91,7 @@ public class DocumentGeneration extends Fragment {
         btnSing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).addFragment();
+                ((MainActivity) requireActivity()).addFragment();
             }
         });
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -116,9 +111,9 @@ public class DocumentGeneration extends Fragment {
                 .load();
     }
 
-    public void appSendPDF(){
+    private void appSendPDF(){
         String[] mailto = {""};
-        Uri uri = FileProvider.getUriForFile(getActivity().getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", templatePDF.getFile());
+        Uri uri = FileProvider.getUriForFile(requireActivity().getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", templatePDF.getFile());
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_EMAIL, mailto);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Calc PDF Report");
@@ -141,14 +136,12 @@ public class DocumentGeneration extends Fragment {
         @Override
         protected Boolean doInBackground(Void... params) {
             templatePDF.loadData();
+            publishProgress(1);
+            templatePDF.loadDataClient();
+            publishProgress(2);
+            templatePDF.loadDataComputer();
             publishProgress(3);
-            if(bmFinals!=null){
-                try {
-                    templatePDF.loadImages(bmFinals, photosSelected);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            templatePDF.loadDataTechnical();
             publishProgress(5);
             templatePDF.loadDataBurnerAssembly();
             publishProgress(10);
@@ -169,6 +162,14 @@ public class DocumentGeneration extends Fragment {
             templatePDF.loadDataElectricMotors();
             publishProgress(50);
             templatePDF.loadDataPipesAccessories();
+            publishProgress(51);
+            templatePDF.loadDataObservations();
+            publishProgress(52);
+            templatePDF.loadDataRecommendations();
+            publishProgress(53);
+            if(bmFinals!=null){
+                templatePDF.loadImages(bmFinals, photosSelected);
+            }
             publishProgress(55);
             templatePDF.createDocument();
             publishProgress(60);
@@ -203,8 +204,12 @@ public class DocumentGeneration extends Fragment {
         @Override
         protected void onProgressUpdate(Integer... values) {
             int progress = values[0];
-            if(progress==3){
-                progressTextInformation.setText("Cargando Imagenes Seleccionadas");
+            if(progress==1){
+                progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_customer_data));
+            }else if(progress==2){
+                progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_equipment_data));
+            }else if(progress==3){
+                progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_technician_data));
             }else if(progress==5){
                 progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_burner_assembly));
             }else if(progress==10){
@@ -225,6 +230,12 @@ public class DocumentGeneration extends Fragment {
                 progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_electric_motors));
             }else if(progress==50){
                 progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_pipes_accessories));
+            }else if(progress==51){
+                progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_observations));
+            }else if(progress==52){
+                progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_recommendation));
+            }else if(progress==53){
+                progressTextInformation.setText("Cargando Imagenes Seleccionadas");
             }else if(progress==55){
                 progressTextInformation.setText("Creando Documento");
             }else if(progress==60){
@@ -246,6 +257,7 @@ public class DocumentGeneration extends Fragment {
             }
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPreExecute() {
             progressTextInformation.setText("Generando Bases");
@@ -311,8 +323,10 @@ public class DocumentGeneration extends Fragment {
             }
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPreExecute() {
+            progressTextInformation.setVisibility(View.VISIBLE);
             progressTextInformation.setText("Abriendo Documento");
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setMax(100);
@@ -334,13 +348,14 @@ public class DocumentGeneration extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private int maxHeight(){
         //get height window
         DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int pxWindow = metrics.heightPixels; // alto absoluto en pixels
         //get height layout
-        int pxLayoutButtons = Math.round(DynamicSizes.convertDpToPixel(50, getContext()));
+        int pxLayoutButtons = Math.round(DynamicSizes.convertDpToPixel(50, requireContext()));
         return pxWindow-(pxLayoutButtons*2);
     }
 

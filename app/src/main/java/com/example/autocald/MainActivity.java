@@ -14,16 +14,19 @@ import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Toast;
 
 import com.example.autocald.controller.activity.MainActivityController;
+import com.example.autocald.ui.additionalFeatures.Observations;
+import com.example.autocald.ui.additionalFeatures.Recommendations;
 import com.example.autocald.ui.conditionBoilerElements.MainConditionBoilerElements;
 import com.example.autocald.ui.maintenanceData.computerData.ComputerData;
 import com.example.autocald.ui.maintenanceData.dataClient.DataClient;
-import com.example.autocald.ui.digitalSignature.DigitalSignature;
-import com.example.autocald.ui.documentGeneration.DocumentGeneration;
+import com.example.autocald.ui.ending.DigitalSignature;
+import com.example.autocald.ui.ending.DocumentGeneration;
 import com.example.autocald.ui.maintenanceData.technicalData.TechnicalData;
-import com.example.autocald.ui.photoManagement.PhotoManagement;
+import com.example.autocald.ui.additionalFeatures.PhotoManagement;
+import com.example.autocald.utilities.Reset;
+import com.github.barteksc.pdfviewer.BuildConfig;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private ComputerData computerData = null;
     private TechnicalData technicalData = null;
     private MainConditionBoilerElements mainConditionBoilerElements = null;
+    private Observations observations = null;
+    private Recommendations recommendations = null;
     private PhotoManagement photoManagement = null;
     private DigitalSignature digitalSignature = null;
     private DocumentGeneration documentGeneration =null;
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     //variables PhotoManagement
     private Bitmap[] bmFinals;
     private boolean[] photosSelected;
+    private Menu menu;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), dataClient = new DataClient());
+        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), dataClient = new DataClient(), "dataClient");
         toolbar.setTitle(R.string.menu_customer_data);
         fab.hide();
 
@@ -120,101 +126,128 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 //dataClient
                 if(item.getItemId()==R.id.nav_data_client){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), dataClient = new DataClient());
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), dataClient = new DataClient(), "dataClient");
                     toolbar.setTitle(R.string.menu_customer_data);
+                    optionsMenuAvailable(1);
                     fab.hide();
                     drawer.closeDrawers();
                 }
                 //dataComputer
                 if(item.getItemId()==R.id.nav_computer_data){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), computerData = new ComputerData());
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), computerData = new ComputerData(), "computerData");
+                    optionsMenuAvailable(1);
                     toolbar.setTitle(R.string.menu_equipment_data);
                     fab.hide();
                     drawer.closeDrawers();
                 }
                 //dataTechnical
                 if(item.getItemId()==R.id.nav_technical_data){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), technicalData = new TechnicalData());
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), technicalData = new TechnicalData(), "technicalData");
+                    optionsMenuAvailable(1);
                     toolbar.setTitle(R.string.menu_technician_data);
                     fab.hide();
                     drawer.closeDrawers();
                 }
                 //burnerAssembly
                 if(item.getItemId()==R.id.nav_burner_assembly){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(4));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(4), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
                     toolbar.setTitle(R.string.menu_burner_assembly);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     fab.show();
                     drawer.closeDrawers();
                 }
                 //SecurityControl
                 if(item.getItemId()==R.id.nav_security_control){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(5));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(5), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
                     toolbar.setTitle(R.string.menu_security_control);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     fab.show();
                     drawer.closeDrawers();
                 }
                 //WaterLevelControl
                 if(item.getItemId()==R.id.nav_water_level_control){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(6));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(6), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
                     toolbar.setTitle(R.string.menu_water_level_control);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     fab.show();
                     drawer.closeDrawers();
                 }
                 //CondensateTank
                 if(item.getItemId()==R.id.nav_condensate_tank){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(7));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(7), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     toolbar.setTitle(R.string.menu_condensate_tank);
                     fab.show();
                     drawer.closeDrawers();
                 }
                 //WaterPump
                 if(item.getItemId()==R.id.nav_water_pump){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(8));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(8), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     fab.show();
                     toolbar.setTitle(R.string.menu_water_pump);
                     drawer.closeDrawers();
                 }
                 //SecurityTest
                 if(item.getItemId()==R.id.nav_security_test){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(9));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(9), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     fab.show();
                     toolbar.setTitle(R.string.menu_security_test);
                     drawer.closeDrawers();
                 }
                 //Body
                 if(item.getItemId()==R.id.nav_body){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(10));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(10), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     fab.show();
                     toolbar.setTitle(R.string.menu_body);
                     drawer.closeDrawers();
                 }else if(item.getItemId()==R.id.nav_electrical_panel_control){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(11));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(11), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     fab.show();
                     toolbar.setTitle(R.string.menu_electrical_panel_control);
                     drawer.closeDrawers();
                 }
                 //ElectricMotors
                 if(item.getItemId()==R.id.nav_electric_motors){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(12));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(12), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     fab.show();
                     toolbar.setTitle(R.string.menu_electric_motors);
                     drawer.closeDrawers();
                 }
                 //PipesAccessories
                 if(item.getItemId()==R.id.nav_pipes_accessories){
-                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(13));
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), mainConditionBoilerElements = new MainConditionBoilerElements(13), "mainConditionBoilerElements");
+                    optionsMenuAvailable(2);
+                    fab.setImageResource(R.drawable.ic_add_a_photo);
                     fab.show();
                     toolbar.setTitle(R.string.menu_pipes_accessories);
                     drawer.closeDrawers();
                 }
                 //Observations
                 if(item.getItemId()==R.id.nav_observation){
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), observations = new Observations(), "observations");
+                    optionsMenuAvailable(1);
                     fab.hide();
                     toolbar.setTitle(R.string.menu_observations);
                     drawer.closeDrawers();
                 }
                 //Recommendations
                 if(item.getItemId()==R.id.nav_recommendations){
+                    MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), recommendations = new Recommendations(), "recommendations");
+                    optionsMenuAvailable(1);
                     fab.hide();
                     toolbar.setTitle(R.string.menu_recommendation);
                     drawer.closeDrawers();
@@ -222,22 +255,25 @@ public class MainActivity extends AppCompatActivity {
                 //PhotoManagement
                 if(item.getItemId()==R.id.nav_photo_management){
                     if(bmFinals!=null){
-                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), photoManagement = new PhotoManagement(bmFinals, photosSelected));
+                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), photoManagement = new PhotoManagement(bmFinals, photosSelected), "photoManagement");
                     }else {
-                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), photoManagement = new PhotoManagement());
+                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), photoManagement = new PhotoManagement(), "photoManagement");
                     }
-                    fab.hide();
+                    optionsMenuAvailable(3);
+                    fab.setImageResource(R.drawable.ic_add_a_image);
+                    fab.show();
                     toolbar.setTitle(R.string.menu_photo_management);
                     drawer.closeDrawers();
                 }
                 //DocumentGeneration
                 if(item.getItemId()==R.id.nav_document_generation){
                     if(bmFinals!=null){
-                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration(bmFinals, photosSelected));
+                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration(bmFinals, photosSelected), "documentGeneration");
                     }else{
-                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration());
+                        MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration(), "documentGeneration");
                     }
                     //initializeButtonGenerate();
+                    optionsMenuAvailable(3);
                     fab.hide();
                     toolbar.setTitle(R.string.menu_document_generation);
                     drawer.closeDrawers();
@@ -252,20 +288,48 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        this.menu = menu;
+        optionsMenuAvailable(1);
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
+        Reset reset = new Reset(getApplicationContext());
         if(item.getItemId()==R.id.action_reset_form){
-            MainActivityController.Companion.resetFragment(mainConditionBoilerElements);
+            if (dataClient != null && dataClient.isVisible()) {
+                MainActivityController.Companion.resetFragment(dataClient);
+            }else if(computerData != null && computerData.isVisible()){
+                MainActivityController.Companion.resetFragment(computerData);
+            }else if(technicalData != null && technicalData.isVisible()){
+                MainActivityController.Companion.resetFragment(technicalData);
+            }else if(mainConditionBoilerElements != null && mainConditionBoilerElements.isVisible()){
+                MainActivityController.Companion.resetFragment(mainConditionBoilerElements);
+            }else if(observations != null && observations.isVisible()){
+                MainActivityController.Companion.resetFragment(observations);
+            }else if(recommendations != null && recommendations.isVisible()){
+                MainActivityController.Companion.resetFragment(recommendations);
+            }
         }
         if(item.getItemId()==R.id.action_reset_module){
-
+            MainActivityController.Companion.resetModule(mainConditionBoilerElements);
         }
         if(item.getItemId()==R.id.action_reset_all){
-
+            if (dataClient != null && dataClient.isVisible()) {
+                MainActivityController.Companion.resetFragment(dataClient);
+            }else if(computerData != null && computerData.isVisible()){
+                MainActivityController.Companion.resetFragment(computerData);
+            }else if(technicalData != null && technicalData.isVisible()){
+                MainActivityController.Companion.resetFragment(technicalData);
+            }else if(mainConditionBoilerElements != null && mainConditionBoilerElements.isVisible()){
+                MainActivityController.Companion.resetFragment(mainConditionBoilerElements);
+            }else if(observations != null && observations.isVisible()){
+                MainActivityController.Companion.resetFragment(observations);
+            }else if(recommendations != null && recommendations.isVisible()){
+                MainActivityController.Companion.resetFragment(recommendations);
+            }
+            reset.resetAll();
         }
 
 
@@ -280,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addFragment(){
-        MainActivityController.Companion.addFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), digitalSignature = new DigitalSignature());
+        MainActivityController.Companion.addFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), digitalSignature = new DigitalSignature(), "digitalSignature");
     }
 
     public void removeFragment(Bitmap signature){
@@ -335,5 +399,37 @@ public class MainActivity extends AppCompatActivity {
             MainActivityController.Companion.addPhoto(mainConditionBoilerElements, path);
         }
     }
+
+    private void optionsMenuAvailable(int i){
+        /*
+        0=resetForm
+        1=resetModule
+        2=resetAll
+         */
+        if(i==1){
+            menu.getItem(0).setEnabled(true);
+            menu.getItem(1).setEnabled(false);
+            menu.getItem(2).setEnabled(true);
+        }else if(i==2){
+            menu.getItem(0).setEnabled(true);
+            menu.getItem(1).setEnabled(true);
+            menu.getItem(2).setEnabled(true);
+        }else if(i==3){
+            menu.getItem(0).setEnabled(false);
+            menu.getItem(1).setEnabled(false);
+            menu.getItem(2).setEnabled(false);
+        }
+    }
+
+    /*
+    @SuppressLint("IntentReset")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    private void loadImage(){
+        Intent intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/");
+        startActivityForResult(Intent.createChooser(intent,"seleccione la aplicacion"),10);
+    }
+
+     */
 
 }

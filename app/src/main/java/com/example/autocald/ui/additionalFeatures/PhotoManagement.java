@@ -1,12 +1,14 @@
-package com.example.autocald.ui.photoManagement;
+package com.example.autocald.ui.additionalFeatures;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.util.DisplayMetrics;
@@ -36,7 +38,6 @@ public class PhotoManagement extends Fragment {
     private GridView gridViewImage;
     private Bitmap[] bitmaps;
     private boolean[] photoSelected;
-    private LinearLayout layoutGrid;
 
     public PhotoManagement() {
     }
@@ -52,11 +53,12 @@ public class PhotoManagement extends Fragment {
         return inflater.inflate(R.layout.fragment_photo_management, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         gridViewImage = view.findViewById(R.id.grid_view_imagenes);
-        layoutGrid = view.findViewById(R.id.layoutGrid);
+        LinearLayout layoutGrid = view.findViewById(R.id.layoutGrid);
         ViewGroup.LayoutParams params = layoutGrid.getLayoutParams();
         params.height = maxHeight();
         layoutGrid.setLayoutParams(params);
@@ -71,7 +73,7 @@ public class PhotoManagement extends Fragment {
             public void onClick(View v) {
                 Bitmap[] bmFinals = photoManagementAdapter.getBitmaps();
                 boolean[] photosSelected = photoManagementAdapter.getPhotoSelected();
-                ((MainActivity)getActivity()).saveDataPhotoManagement(bmFinals, photosSelected);
+                ((MainActivity) requireActivity()).saveDataPhotoManagement(bmFinals, photosSelected);
                 Toast.makeText(getContext(),"Imágenes Seleccionadas", Toast.LENGTH_LONG).show();
             }
         });
@@ -155,6 +157,7 @@ public class PhotoManagement extends Fragment {
             }
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPreExecute() {
             progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_burner_assembly));
@@ -187,13 +190,14 @@ public class PhotoManagement extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private int maxHeight(){
         //get height window
         DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int pxWindow = metrics.heightPixels; // alto absoluto en pixels
         //get height layout
-        int pxLayoutButtons = Math.round(DynamicSizes.convertDpToPixel(50, getContext()));
+        int pxLayoutButtons = Math.round(DynamicSizes.convertDpToPixel(50, requireContext()));
         return pxWindow-(pxLayoutButtons*2);
     }
 
