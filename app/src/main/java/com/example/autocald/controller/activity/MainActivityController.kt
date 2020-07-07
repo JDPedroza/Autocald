@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.autocald.ui.additionalFeatures.Observations
+import com.example.autocald.ui.additionalFeatures.PhotoManagement
 import com.example.autocald.ui.additionalFeatures.Recommendations
 import com.example.autocald.ui.conditionBoilerElements.MainConditionBoilerElements
 import com.example.autocald.ui.maintenanceData.computerData.ComputerData
@@ -46,7 +47,9 @@ class MainActivityController {
         fun addPhoto(fragment: MainConditionBoilerElements, path: String){
             fragment.addPhoto(path)
         }
-
+        fun addImage(fragment: PhotoManagement, path: String){
+            fragment.addImage(path)
+        }
         fun resetModule(fragment: MainConditionBoilerElements) {
             fragment.resetModule()
         }

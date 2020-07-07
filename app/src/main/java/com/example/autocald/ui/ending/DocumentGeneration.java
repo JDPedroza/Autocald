@@ -116,8 +116,10 @@ public class DocumentGeneration extends Fragment {
         Uri uri = FileProvider.getUriForFile(requireActivity().getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", templatePDF.getFile());
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_EMAIL, mailto);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Calc PDF Report");
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,"Hi PDF is attached in this mail. ");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, templatePDF.generateExtraSubject());
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,"Autocald\n" +
+                "Automatizacion y Calderas.\n" +
+                "email: autocald@hotmail.com");
         emailIntent.setType("application/pdf");
         emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
@@ -290,7 +292,7 @@ public class DocumentGeneration extends Fragment {
         protected Boolean doInBackground(Void... params) {
             templatePDF.createDocument();
             publishProgress(10);
-            templatePDF.addMetaData("Documento", "Documento", "Autocald APP");
+            templatePDF.addMetaData(templatePDF.generateNameDocument(), templatePDF.generateExtraSubject(), "Autocald APP");
             publishProgress(20);
             templatePDF.setSignature(signature);
             publishProgress(60);
@@ -362,7 +364,7 @@ public class DocumentGeneration extends Fragment {
     private void imageWarning(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Advertencia");
-        builder.setMessage("Aun no se han seleccionado imagenes.\nSe generará el documento sin imagenes")
+        builder.setMessage("Aun no se han seleccionado imagenes.\n\nSe generará el documento sin imagenes")
                 .setPositiveButton("Generar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

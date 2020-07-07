@@ -1,6 +1,8 @@
 package com.example.autocald.ui.additionalFeatures;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -38,6 +40,8 @@ public class PhotoManagement extends Fragment {
     private GridView gridViewImage;
     private Bitmap[] bitmaps;
     private boolean[] photoSelected;
+    private int numberPhotos=0;
+    private SharedPreferences dataForm;
 
     public PhotoManagement() {
     }
@@ -50,6 +54,7 @@ public class PhotoManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        createDateForm();
         return inflater.inflate(R.layout.fragment_photo_management, container, false);
     }
 
@@ -77,6 +82,7 @@ public class PhotoManagement extends Fragment {
                 Toast.makeText(getContext(),"Imágenes Seleccionadas", Toast.LENGTH_LONG).show();
             }
         });
+        getDataForm();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -84,6 +90,8 @@ public class PhotoManagement extends Fragment {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            photoManagementAdapter.loadImagesExtras();
+            publishProgress(2);
             photoManagementAdapter.loadImagesBurnerAssembly();
             publishProgress(5);
             photoManagementAdapter.loadImagesSecurityControl();
@@ -132,7 +140,9 @@ public class PhotoManagement extends Fragment {
         @Override
         protected void onProgressUpdate(Integer... values) {
             int progress = values[0];
-            if(progress==5){
+            if(progress==2){
+                progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_photo_management));
+            }else if(progress==5){
                 progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_security_control));
             }else if(progress==10){
                 progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_water_level_control));
@@ -201,4 +211,22 @@ public class PhotoManagement extends Fragment {
         return pxWindow-(pxLayoutButtons*2);
     }
 
+    public void addImage(String path){
+        numberPhotos++;
+        SharedPreferences.Editor editor = dataForm.edit();
+        editor.putBoolean("addPhotoBoolean", true);
+        editor.putString("pathPhoto"+this.numberPhotos+"Text", path);
+        editor.putInt("numberPhotosInt", this.numberPhotos);
+        editor.apply();
+        photoManagementAdapter = new PhotoManagementAdapter(getContext());
+        new LoadGrid().execute();
+    }
+
+    private void createDateForm(){
+        dataForm = requireActivity().getSharedPreferences("M16PhotoManagement", Context.MODE_PRIVATE);
+    }
+
+    private void getDataForm(){
+        this.numberPhotos = dataForm.getInt("numberPhotosInt", 0);
+    }
 }

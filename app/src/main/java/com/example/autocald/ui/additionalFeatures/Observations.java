@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.autocald.R;
-
-import java.util.Objects;
+import com.example.autocald.utilities.DynamicSizes;
 
 public class Observations extends Fragment {
 
@@ -42,15 +42,18 @@ public class Observations extends Fragment {
         return inflater.inflate(R.layout.fragment_observations, container, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDataForm();
         linearLayoutDecisions = view.findViewById(R.id.linearLayoutDecisions);
+        ViewGroup.LayoutParams params = linearLayoutDecisions.getLayoutParams();
+        params.height = maxHeight();
+        linearLayoutDecisions.setLayoutParams(params);
         if(observations!=null){
-            for(int i=0; i<observations.length; i++){
-                addObservation(observations[i]);
+            for (String observation : observations) {
+                addObservation(observation);
             }
         }else{
            addObservation();
@@ -170,6 +173,17 @@ public class Observations extends Fragment {
         SharedPreferences.Editor editor = dataForm.edit();
         editor.clear();
         editor.apply();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private int maxHeight(){
+        //get height window
+        DisplayMetrics metrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int pxWindow = metrics.heightPixels; // alto absoluto en pixels
+        //get height layout
+        int pxLayoutButtons = Math.round(DynamicSizes.convertDpToPixel(50, requireContext()));
+        return pxWindow-(pxLayoutButtons*2);
     }
 
 }

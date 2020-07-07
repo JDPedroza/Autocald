@@ -209,12 +209,12 @@
             android:background="@android:color/background_dark" />
 
         <TextView
-            android:id="@+id/textView_Line_Gas_Pressure"
+            android:id="@+id/textView_Fuel_Pressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
-            android:text="@string/title_line_gas_pressure"
+            android:text="@string/title_fuel_pressure"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -257,12 +257,12 @@
             android:background="@android:color/background_dark" />
 
         <TextView
-            android:id="@+id/textView_Gas_Train_Pressure"
+            android:id="@+id/textView_Line_Gas_Pressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
-            android:text="@string/title_gas_train_pressure"
+            android:text="@string/title_line_gas_pressure"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -305,12 +305,12 @@
             android:background="@android:color/background_dark" />
 
         <TextView
-            android:id="@+id/textView_Gas_Temperature"
+            android:id="@+id/textView_Gas_Train_Pressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
-            android:text="@string/title_gas_temperature"
+            android:text="@string/title_gas_train_pressure"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -353,12 +353,12 @@
             android:background="@android:color/background_dark" />
 
         <TextView
-            android:id="@+id/textView_Water_Temperature"
+            android:id="@+id/textView_Gas_Temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
-            android:text="@string/title_water_temperature"
+            android:text="@string/title_gas_temperature"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -383,6 +383,54 @@
 
             <EditText
                 android:id="@+id/editText_Gas_Temperature_Observation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="13"
+                android:hint="@string/text_observations_text"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha=".5"
+            android:background="@android:color/background_dark" />
+
+        <TextView
+            android:id="@+id/textView_Water_Temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/title_water_temperature"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_Water_Temperature_Value"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
+                android:ems="13"
+                android:hint="@string/text_observations_number"
+                android:inputType="textPersonName"
+                android:text="@string/extra_empty"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editText_Water_Temperature_Observation"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"

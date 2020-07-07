@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.autocald.R;
+import com.example.autocald.utilities.DynamicSizes;
 
 public class Recommendations extends Fragment {
 
@@ -41,19 +43,23 @@ public class Recommendations extends Fragment {
         return inflater.inflate(R.layout.fragment_recommendations, container, false);
     }
 
+
     private void createForm(){
-        dataForm = getActivity().getSharedPreferences("M15Recommendations", Context.MODE_PRIVATE);
+        dataForm = requireActivity().getSharedPreferences("M15Recommendations", Context.MODE_PRIVATE);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDataForm();
         linearLayoutDecisions = view.findViewById(R.id.linearLayoutDecisions);
+        ViewGroup.LayoutParams params = linearLayoutDecisions.getLayoutParams();
+        params.height = maxHeight();
+        linearLayoutDecisions.setLayoutParams(params);
         if(recommendations!=null){
-            for(int i=0; i<recommendations.length; i++){
-                addRecommendation(recommendations[i]);
+            for (String recommendation : recommendations) {
+                addRecommendation(recommendation);
             }
         }else{
             addRecommendation();
@@ -79,7 +85,7 @@ public class Recommendations extends Fragment {
     }
 
     private void getDataForm(){
-        dataForm = getActivity().getSharedPreferences("M15Recommendations", Context.MODE_PRIVATE);
+        dataForm = requireActivity().getSharedPreferences("M15Recommendations", Context.MODE_PRIVATE);
         boolean generateChange = dataForm.getBoolean("generateChange", false);
         if(generateChange){
             int numberChange = dataForm.getInt("numberChange", 1);
@@ -166,6 +172,18 @@ public class Recommendations extends Fragment {
         SharedPreferences.Editor editor = dataForm.edit();
         editor.clear();
         editor.apply();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private int maxHeight(){
+        //get height window
+        DisplayMetrics metrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int pxWindow = metrics.heightPixels; // alto absoluto en pixels
+        //get height layout
+        int pxLayoutButtons = Math.round(DynamicSizes.convertDpToPixel(50, requireContext()));
+        return pxWindow-(pxLayoutButtons*2);
     }
 
 }

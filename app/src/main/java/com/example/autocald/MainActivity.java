@@ -2,6 +2,8 @@ package com.example.autocald;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -26,7 +28,6 @@ import com.example.autocald.ui.ending.DocumentGeneration;
 import com.example.autocald.ui.maintenanceData.technicalData.TechnicalData;
 import com.example.autocald.ui.additionalFeatures.PhotoManagement;
 import com.example.autocald.utilities.Reset;
-import com.github.barteksc.pdfviewer.BuildConfig;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     private DocumentGeneration documentGeneration =null;
     private FloatingActionButton fab = null;
 
+    private Reset reset;
+
     //btn
     File mAbsoluteFile;
     final int PHOTO_CONST = 1;
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                takePhoto();
+                    positionCameraWarning();
             }
         });
 
@@ -293,10 +296,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Reset reset = new Reset(getApplicationContext());
         if(item.getItemId()==R.id.action_reset_form){
             if (dataClient != null && dataClient.isVisible()) {
                 MainActivityController.Companion.resetFragment(dataClient);
@@ -329,10 +331,8 @@ public class MainActivity extends AppCompatActivity {
             }else if(recommendations != null && recommendations.isVisible()){
                 MainActivityController.Companion.resetFragment(recommendations);
             }
-            reset.resetAll();
+            deleteImageWarning();
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -365,7 +365,6 @@ public class MainActivity extends AppCompatActivity {
             File photoFile = null;
             try{
                 photoFile = createPhotoFile();
-
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -381,10 +380,13 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private File createPhotoFile() throws IOException {
-        String timestamp = new SimpleDateFormat("yyyyMMdd HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timestamp = new SimpleDateFormat("yyyyMMdd HHmmss").format(new Date());
         String imageFileName = "imagen "+ timestamp;
 
-        File storageFile=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "PDF");
+        File storageFile=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "AutocaldPhotos");
+        if(!storageFile.exists()) {
+            storageFile.mkdir();
+        }
         File photoFile = File.createTempFile(imageFileName,".png", storageFile);
         this.mAbsoluteFile=photoFile;
         return photoFile;
@@ -393,10 +395,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==PHOTO_CONST && resultCode == RESULT_OK){
-            Uri imageUri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", mAbsoluteFile);
-            String path = imageUri.toString();
-            MainActivityController.Companion.addPhoto(mainConditionBoilerElements, path);
+        if(mainConditionBoilerElements!=null && mainConditionBoilerElements.isVisible()){
+            if(requestCode==PHOTO_CONST && resultCode == RESULT_OK){
+                Uri imageUri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", mAbsoluteFile);
+                String path = imageUri.toString();
+                MainActivityController.Companion.addPhoto(mainConditionBoilerElements, path);
+            }
+        }
+        if(photoManagement!=null && photoManagement.isVisible()){
+            if(resultCode == RESULT_OK){
+                Uri imageUri = data.getData();
+                String path = imageUri.toString();
+                MainActivityController.Companion.addImage(photoManagement, path);
+            }
         }
     }
 
@@ -421,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*
+
     @SuppressLint("IntentReset")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     private void loadImage(){
@@ -430,6 +441,48 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent,"seleccione la aplicacion"),10);
     }
 
-     */
+    private void positionCameraWarning(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reset = new Reset(getApplicationContext());
+        builder.setTitle("Advertencia");
+        builder.setMessage("Recuerde que la foto debe estar en sentido vertical.\n")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(mainConditionBoilerElements!=null && mainConditionBoilerElements.isVisible()){
+                            takePhoto();
+                        }else if(photoManagement!=null && photoManagement.isVisible()){
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadImage();
+                            }
+                        }
+                    }
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).show();
+    }
+
+    private void deleteImageWarning(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reset = new Reset(getApplicationContext());
+        builder.setTitle("Advertencia");
+        builder.setMessage("¿Desea eliminar imágenes tomadas por la aplicación?\n")
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        reset.resetAll(true);
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                reset.resetAll(false);
+            }
+        }).show();
+    }
 
 }

@@ -48,7 +48,8 @@ public class MainConditionBoilerElements extends Fragment{
             this.dataForm = new String[]{"M8GeneralAspectModule8", "M8Coupling", "M8Pressure", "M8Accessories"};
         }else if(module==9){
             this.title = new String[]{"Falla de Llama", "Bajo Nivel Macdonell", "Bajo Nivel Warrick", "Alta Presion", "Baja Presion", "Aire de Combustion", "Alta presion de Vapor", "Prueba Hidrostatica", "Valvulas de Seguridad", "Temperatura (Alta y Baja)", "Otros"};
-            this.dataForm = new String[]{"M9FlameFailure", "M9MacdonellLowLevel", "M9LowLevelWarrick", "M9High pressure", "M9LowPressure", "M9CombustionAir", "M9HighSteamPressure", "M9HydrostaticTest", "M9SafetyValves", "M9TemperatureHighLow", "M9Others"};
+            //this.dataForm = new String[]{"M9FlameFailure", "M9MacdonellLowLevel", "M9LowLevelWarrick", "M9HighPressure", "M9LowPressure", "M9CombustionAir", "M9HighSteamPressure", "M9HydrostaticTest", "M9SafetyValves", "M9TemperatureHighLow", "M9Others"};
+            this.dataForm = new String[]{"M91", "M92", "M93", "M94", "M95", "M96", "M97", "M98", "M99", "M910", "M911"};
         }else if(module==10){
             this.title = new String[]{"Shell", "Camara Humeda", "Camara Seca", "Refractarios", "Tuberia interna", "Soldaduras", "Tapas Frontal y Trasera", "Manhole", "Handhole", "Empaques", "Pintura ", "Aislamiento"};
             this.dataForm = new String[]{"M10Shell", "M10WetChamber", "M10DryChamber", "M10Refractories", "M10InternalPiping", "M10Welds", "M10FrontBacKCovers", "M10Manhole", "M10Handhole", "M10Packaging", "M10Painting", "M10Isolation"};

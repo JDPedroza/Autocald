@@ -224,14 +224,19 @@ public class SliderFragment extends Fragment {
         //setForm Spinner
         if(id==4){
             editor.putInt("dataSpinnerItem", 0);
+            editor.putString("dataObservationText", observation.getText().toString());
         }else if(id==5){
             editor.putInt("dataSpinnerItem", 1);
+            editor.putString("dataObservationText", observation.getText().toString());
         }else if(id==6){
             editor.putInt("dataSpinnerItem", 2);
+            editor.putString("dataObservationText", observation.getText().toString());
         }else if(id==7){
             editor.putInt("dataSpinnerItem", 3);
+            editor.putString("dataObservationText", observation.getText().toString());
         }else if(id==8){
             editor.putInt("dataSpinnerItem", 4);
+            editor.putString("dataObservationText", observation.getText().toString());
         }
 
         //setForm Observation

@@ -8,10 +8,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_test">Titulo</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-
     <!--Conjunto Datos mantenimiento-->
     <string name="title_maintenance_data">Datos Mantenimiento</string>
     <string name="menu_customer_data">Datos del cliente</string>
@@ -62,7 +58,7 @@
     <string name="text_date">00/00/00</string>
     <string name="title_type_service">Tipo de Servicio</string>
     <string name="title_client">Cliente</string>
-    <string name="title_capacity">Capasidad</string>
+    <string name="title_capacity">Capacidad</string>
     <string name="title_model_year">Modelo - Año</string>
 
     <!--Formulario Datos Equipo-->
@@ -112,6 +108,6 @@
     <string name="button_send_document">Enviar</string>
 
     <!--Extras-->
-    <string name="extra_empty" />
+    <string name="extra_empty"/>
 
 </resources>

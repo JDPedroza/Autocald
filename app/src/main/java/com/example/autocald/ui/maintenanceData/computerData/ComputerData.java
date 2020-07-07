@@ -36,6 +36,8 @@ public class ComputerData extends Fragment {
     private EditText editText_Gas_Train_Pressure_Observation;
     private EditText editText_Gas_Temperature_Value;
     private EditText editText_Gas_Temperature_Observation;
+    private EditText editText_Water_Temperature_Value;
+    private EditText editText_Water_Temperature_Observation;
     private EditText editText_Boiler_Level_Value;
     private EditText editText_Boiler_Level_Observation;
     private EditText editText_Condensate_Tank_Level_Value;
@@ -90,6 +92,10 @@ public class ComputerData extends Fragment {
         addTextChangedListener(editText_Gas_Temperature_Value);
         editText_Gas_Temperature_Observation = view.findViewById(R.id.editText_Gas_Temperature_Observation);
         addTextChangedListener(editText_Gas_Temperature_Observation);
+        editText_Water_Temperature_Value = view.findViewById(R.id.editText_Water_Temperature_Value);
+        addTextChangedListener(editText_Water_Temperature_Value);
+        editText_Water_Temperature_Observation = view.findViewById(R.id.editText_Water_Temperature_Observation);
+        addTextChangedListener(editText_Water_Temperature_Observation);
         editText_Boiler_Level_Value = view.findViewById(R.id.editText_Boiler_Level_Value);
         addTextChangedListener(editText_Boiler_Level_Value);
         editText_Boiler_Level_Observation = view.findViewById(R.id.editText_Boiler_Level_Observation);
@@ -160,6 +166,10 @@ public class ComputerData extends Fragment {
             editor.putString("editText_Gas_Temperature_Value", text);
         }else if(id==editText_Gas_Temperature_Observation.getId()){
             editor.putString("editText_Gas_Temperature_Observation", text);
+        }if(id==editText_Water_Temperature_Value.getId()){
+            editor.putString("editText_Water_Temperature_Value", text);
+        }else if(id==editText_Water_Temperature_Observation.getId()){
+            editor.putString("editText_Water_Temperature_Observation", text);
         }else if(id==editText_Boiler_Level_Value.getId()){
             editor.putString("editText_Boiler_Level_Value", text);
         }else if(id==editText_Boiler_Level_Observation.getId()){
@@ -197,11 +207,13 @@ public class ComputerData extends Fragment {
         editText_Gas_Train_Pressure_Observation.setText(dataForm.getString("editText_Gas_Train_Pressure_Observation", ""));
         editText_Gas_Temperature_Value.setText(dataForm.getString("editText_Gas_Temperature_Value", ""));
         editText_Gas_Temperature_Observation.setText(dataForm.getString("editText_Gas_Temperature_Observation", ""));
+        editText_Water_Temperature_Value.setText(dataForm.getString("editText_Water_Temperature_Value", ""));
+        editText_Water_Temperature_Observation.setText(dataForm.getString("editText_Water_Temperature_Observation", ""));
         editText_Boiler_Level_Value.setText(dataForm.getString("editText_Boiler_Level_Value", ""));
         editText_Boiler_Level_Observation.setText(dataForm.getString("editText_Boiler_Level_Observation", ""));
         editText_Condensate_Tank_Level_Value.setText(dataForm.getString("editText_Condensate_Tank_Level_Value", ""));
         editText_Condensate_Tank_Level_Observation.setText(dataForm.getString("editText_Condensate_Tank_Level_Observation", ""));
-        editText_Fuel_Tank_Level_Value.setText(dataForm.getString("editText_Vapor_Pressure_Value", ""));
+        editText_Fuel_Tank_Level_Value.setText(dataForm.getString("editText_Fuel_Tank_Level_Value", ""));
         editText_Fuel_Tank_Level_Observation.setText(dataForm.getString("editText_Fuel_Tank_Level_Observation", ""));
     }
 
@@ -222,6 +234,8 @@ public class ComputerData extends Fragment {
         editText_Gas_Train_Pressure_Observation.setText("");
         editText_Gas_Temperature_Value.setText("");
         editText_Gas_Temperature_Observation.setText("");
+        editText_Water_Temperature_Value.setText("");
+        editText_Water_Temperature_Observation.setText("");
         editText_Boiler_Level_Value.setText("");
         editText_Boiler_Level_Observation.setText("");
         editText_Condensate_Tank_Level_Value.setText("");

@@ -2,17 +2,24 @@ package com.example.autocald.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Environment;
+
+import androidx.annotation.RequiresApi;
+
+import java.io.File;
+import java.util.Objects;
 
 public class Reset {
 
     private Context context;
-    private SharedPreferences dataForm;
 
     public Reset(Context context) {
         this.context = context;
     }
 
-    public void resetAll(){
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void resetAll(boolean deleteImages){
         String[] nameDataForms={
                 "M1DataClient",
                 "M2DataComputer",
@@ -28,16 +35,25 @@ public class Reset {
                 "M12FanModule12", "M12Compressor", "M12WaterPump", "M12FuelPump", "M12Bearings",
                 "M13GeneralAspectModule13", "M13Support", "M13IsolationModule13", "M13ValvesModule13", "M13Traps", "M13Checks","M13Purges", "M13Distributor",
                 "M14observations",
-                "M15Recommendations"
+                "M15Recommendations",
+                "M16PhotoManagement"
         };
+        if(deleteImages){
+            File folder=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "AutocaldPhotos");
+            deleteImages(folder);
+        }
         for (String nameDataForm : nameDataForms) {
-            dataForm = context.getSharedPreferences(nameDataForm, Context.MODE_PRIVATE);
+            SharedPreferences dataForm = context.getSharedPreferences(nameDataForm, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = dataForm.edit();
             editor.clear();
             editor.apply();
         }
     }
-
-
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void deleteImages(File archivoODirectorio){
+        if (archivoODirectorio.isDirectory())
+            for (File hijos : Objects.requireNonNull(archivoODirectorio.listFiles()))
+                deleteImages(hijos);
+        archivoODirectorio.delete();
+    }
 }

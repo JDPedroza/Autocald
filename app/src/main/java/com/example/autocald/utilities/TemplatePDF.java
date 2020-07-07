@@ -64,11 +64,36 @@ public class TemplatePDF extends FileProvider{
     private String[]dataRecommendations;
     //DB
     SharedPreferences dataForm;
+
     //builder
     public TemplatePDF(Context context){
         this.context=context;
     }
     //metodos
+    public String generateNameDocument(){
+        String numberService = "0";
+        String nameClient = "No definido";
+        if(!this.dataClient[3].equals("")){
+            nameClient = this.dataClient[3];
+        }
+        if(!this.dataClient[0].equals("")){
+            numberService = this.dataClient[0];
+        }
+        return numberService+" - "+nameClient+".pdf";
+    }
+    public String generateExtraSubject(){
+        String numberService = "0";
+        String nameClient = "No definido";
+        String typeService = "";
+        if(!this.dataClient[3].equals("")){
+            nameClient = this.dataClient[3];
+        }
+        if(!this.dataClient[0].equals("")){
+            numberService = this.dataClient[0];
+        }
+        typeService =this.dataClient[2];
+        return typeService+": "+numberService+" - "+nameClient;
+    }
     public void loadData(){
         //1
         this.dataClient = new String[]{"", "", "", "", "", ""};
@@ -243,12 +268,14 @@ public class TemplatePDF extends FileProvider{
         this.dataComputer[6][2]=dataForm.getString("editText_Gas_Train_Pressure_Observation", "");
         this.dataComputer[7][1]=dataForm.getString("editText_Gas_Temperature_Value", "");
         this.dataComputer[7][2]=dataForm.getString("editText_Gas_Temperature_Observation", "");
-        this.dataComputer[8][1]=dataForm.getString("editText_Boiler_Level_Value", "");
-        this.dataComputer[8][2]=dataForm.getString("editText_Boiler_Level_Observation", "");
-        this.dataComputer[9][1]=dataForm.getString("editText_Condensate_Tank_Level_Value", "");
-        this.dataComputer[9][2]=dataForm.getString("editText_Condensate_Tank_Level_Observation", "");
-        this.dataComputer[10][1]=dataForm.getString("editText_Vapor_Pressure_Value", "");
-        this.dataComputer[10][2]=dataForm.getString("editText_Fuel_Tank_Level_Observation", "");
+        this.dataComputer[8][1]=dataForm.getString("editText_Water_Temperature_Value", "");
+        this.dataComputer[8][2]=dataForm.getString("editText_Water_Temperature_Observation", "");
+        this.dataComputer[9][1]=dataForm.getString("editText_Boiler_Level_Value", "");
+        this.dataComputer[9][2]=dataForm.getString("editText_Boiler_Level_Observation", "");
+        this.dataComputer[10][1]=dataForm.getString("editText_Condensate_Tank_Level_Value", "");
+        this.dataComputer[10][2]=dataForm.getString("editText_Condensate_Tank_Level_Observation", "");
+        this.dataComputer[11][1]=dataForm.getString("editText_Fuel_Tank_Level_Value", "");
+        this.dataComputer[11][2]=dataForm.getString("editText_Fuel_Tank_Level_Observation", "");
     }
     public void loadDataTechnical(){
         //{"Carlos Martinez - Santiago Sanchez", "0", "0", "0", "Ivan Fernando Camargo"};
@@ -378,7 +405,7 @@ public class TemplatePDF extends FileProvider{
         }
     }
     public void loadDataSecurityTest(){
-        String[]namesDataForm={"M9FlameFailure", "M9MacdonellLowLevel", "M9LowLevelWarrick", "M9High pressure", "M9LowPressure", "M9CombustionAir", "M9HighSteamPressure", "M9HydrostaticTest", "M9SafetyValves", "M9TemperatureHighLow", "M9Others"};
+        String[]namesDataForm={"M91", "M92", "M93", "M94", "M95", "M96", "M97", "M98", "M99", "M910", "M911"};
         for(int i=0; i<namesDataForm.length; i++){
             dataForm = context.getSharedPreferences(namesDataForm[i], Context.MODE_PRIVATE);
 
@@ -494,7 +521,7 @@ public class TemplatePDF extends FileProvider{
             }
 
             //validacion observacion
-            this.dataControlSecurity[i][2] = dataForm.getString("dataObservationText", "NA");
+            this.dataPipesAccessories[i][2] = dataForm.getString("dataObservationText", "NA");
         }
     }
     public void loadDataObservations(){
@@ -536,7 +563,7 @@ public class TemplatePDF extends FileProvider{
         }
         this.images = new Image[contador];
         contador=0;
-        for(int i=0; i<images.length; i++){
+        for(int i=0; i<bmFinals.length; i++){
             if(photosSelected[i]){
                 image = generateImage(bmFinals[i]);
                 images[contador]=image;
@@ -572,12 +599,12 @@ public class TemplatePDF extends FileProvider{
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void createFile(){
-        File folder=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "PDF");
+        File folder=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "AutocaldPDFs");
         if(!folder.exists()){
             folder.mkdir();
-            pdfFile=new File(folder, "TemplatePDF.pdf");
+            pdfFile=new File(folder, generateNameDocument());
         }
-        pdfFile=new File(folder, "TemplatePDF.pdf");
+        pdfFile=new File(folder, generateNameDocument());
     }
     public void closeDocument(){
         document.close();
@@ -648,7 +675,9 @@ public class TemplatePDF extends FileProvider{
         //primera fila
         PdfPCell cell = new PdfPCell();
         Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.logotype_pdf);
-        cell.addElement(generateImage(bm));
+        Image image = generateImage(bm);
+        image.scaleAbsolute(258, 30);
+        cell.addElement(image);
         cell.setColspan(5);
         cell.setRowspan(4);
         table.addCell(cell);
@@ -691,8 +720,8 @@ public class TemplatePDF extends FileProvider{
     public PdfPTable dataModules(PdfPTable table){
 
         //6 row
-        table = addTitleModule(table,1);
-        table = addTitleModule(table,7);
+        table = addTitleModule(table,4);
+        table = addTitleModule(table,10);
         //7 -17 row
         int cModule2=0;
 
@@ -841,16 +870,23 @@ public class TemplatePDF extends FileProvider{
                 cModule14++;
 
                 rowSpan = ((getLength(14)-(cModule14-1))+getLength(15)+1);
-
+                PdfPCell cell = new PdfPCell();
                 Paragraph p = new Paragraph();
                 if(images!=null){
+                    int contador=1;
                     for(int j=0; j<images.length; j++){
                         Image img = Image.getInstance(images[j]);
-                        img.scaleAbsolute(65, 90);
+                        img.scaleAbsolute(72, 106);
                         p.add(new Chunk(img, 0, 0, true));
+                        contador++;
+                        if(contador==5){
+                            p.setSpacingAfter(5);
+                            cell.addElement(p);
+                            p = new Paragraph();
+                            contador=1;
+                        }
                     }
                 }
-                PdfPCell cell = new PdfPCell();
                 cell.addElement(p);
                 cell.setColspan(5);
                 cell.setRowspan(rowSpan);
@@ -958,7 +994,7 @@ public class TemplatePDF extends FileProvider{
     }
     private PdfPTable addTitleModule(PdfPTable table, int module){
         module = module-1;
-        String[]titles= {"", "DATOS  DEL EQUIPO", "", "", "CONJUNTO QUEMADOR", "CONTROLES DE SEGURIDAD", "CONTROL DE NIVEL DE AGUA", "TANQUE DE CONDENSADOS", "BOMBA DE AGUA", "PRUEBAS DE SEGURIDAD", "CUERPO", "TABLERO ELECTRICO Y CONTROL", "MOTORES ELECTRICOS", "TUBERIAS - ACCESORIOS", "DATOS  DEL EQUIPO", "OBSERVACIONES GENERALES", "DIAGRAMAS"};
+        String[]titles= {"", "DATOS  DEL EQUIPO", "", "CONJUNTO QUEMADOR", "CONTROLES DE SEGURIDAD", "CONTROL DE NIVEL DE AGUA", "TANQUE DE CONDENSADOS", "BOMBA DE AGUA", "PRUEBAS DE SEGURIDAD", "CUERPO", "TABLERO ELECTRICO Y CONTROL", "MOTORES ELECTRICOS", "TUBERIAS - ACCESORIOS", "DATOS  DEL EQUIPO", "OBSERVACIONES GENERALES", "DIAGRAMAS"};
         table.addCell(customizeCell(titles[module], 3, true, false, 0, 0 ));
         table.addCell(customizeCell("B", 4, true, true, 0, 0 ));
         table.addCell(customizeCell("R", 4, true, true, 0, 0 ));
