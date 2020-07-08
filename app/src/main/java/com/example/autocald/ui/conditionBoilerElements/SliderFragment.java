@@ -3,7 +3,6 @@ package com.example.autocald.ui.conditionBoilerElements;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,9 +24,7 @@ import com.example.autocald.R;
 
 public class SliderFragment extends Fragment {
 
-    //creamos elementos de tipo vista imagen y texto
-    private View view;
-    private TextView title, number_photos;
+    private TextView number_photos;
     private Button btnB, btnR, btnM;
     private Spinner spinnerObservations;
     private EditText observation;
@@ -36,33 +33,23 @@ public class SliderFragment extends Fragment {
     private int numberPhotos=0;
     private String path="";
 
-    // Interfaz Actualizar
-    public interface Actualizar{
-
-        // Método de la interfaz
-        public void actualizarItem();
-    }
-
-    // Objeto de la interfaz actualizar, con este objeto llamaremos el
-    // método de la interfaz
-    Actualizar actualizar;
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         //creamos la vista
-        view = inflater.inflate(R.layout.fragment_slider, container, false);
+        //creamos elementos de tipo vista imagen y texto
+        View view = inflater.inflate(R.layout.fragment_slider, container, false);
 
         //llamamos los elementos creados en el layaout para ENVIAR PARAMETROS.
-        title = view.findViewById(R.id.txtTitle);
+        TextView title = view.findViewById(R.id.txtTitle);
         spinnerObservations = view.findViewById(R.id.spinner);
 
         //leemos el array
-        String [] observaciones={"NA", "Ok", "Otra", "Se cambio", "Se reviso"};
-        ArrayAdapter <String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.spinner_item_sliders, observaciones);
-
+        String [] observaciones={"NA", "Ok", "Otra", "Se cambió", "Se revisó"};
+        ArrayAdapter <String> adapter = new ArrayAdapter<>(requireActivity().getApplicationContext(), R.layout.spinner_item_sliders, observaciones);
+        adapter.setDropDownViewResource(R.layout.spinner_item_sliders);
+        assert getArguments() != null;
         createForm(getArguments().getString("dataForm"));
 
         if(getArguments()!=null){
@@ -133,6 +120,7 @@ public class SliderFragment extends Fragment {
 
         spinnerObservations.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
+            @SuppressLint("SetTextI18n")
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
@@ -150,8 +138,8 @@ public class SliderFragment extends Fragment {
 
                     if(observation.getText().toString().equals("NA")
                             || observation.getText().toString().equals("Ok")
-                            || observation.getText().toString().equals("Se cambio")
-                            || observation.getText().toString().equals("Se reviso")
+                            || observation.getText().toString().equals("Se cambió")
+                            || observation.getText().toString().equals("Se revisó")
                     ){
                         observation.setText("");
                     }
@@ -195,11 +183,12 @@ public class SliderFragment extends Fragment {
             }
         });
 
+        assert getArguments() != null;
         getForm(getArguments().getString("dataForm"));
     }
 
     private void createForm(String name){
-        dataForm = getActivity().getSharedPreferences(name, Context.MODE_PRIVATE);
+        dataForm = requireActivity().getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
     private void setForm(int id){
@@ -258,7 +247,7 @@ public class SliderFragment extends Fragment {
 
     private void getForm(String name){
 
-        dataForm = getActivity().getSharedPreferences(name, Context.MODE_PRIVATE);
+        dataForm = requireActivity().getSharedPreferences(name, Context.MODE_PRIVATE);
 
         boolean btnBPress = dataForm.getBoolean("dataBtnB", false);
         boolean btnRPress = dataForm.getBoolean("dataBtnR", false);

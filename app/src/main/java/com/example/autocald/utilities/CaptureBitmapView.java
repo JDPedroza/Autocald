@@ -11,8 +11,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.ByteArrayOutputStream;
-
 public class CaptureBitmapView extends View {
 
     private Bitmap _Bitmap;
@@ -22,8 +20,6 @@ public class CaptureBitmapView extends View {
     private Paint _paint;
     private float _mX;
     private float _mY;
-    private float TouchTolerance = 4;
-    private float LineThickness = 4;
 
     public CaptureBitmapView(Context context, AttributeSet attr) {
         super(context, attr);
@@ -36,7 +32,8 @@ public class CaptureBitmapView extends View {
         _paint.setStyle(Paint.Style.STROKE);
         _paint.setStrokeJoin(Paint.Join.ROUND);
         _paint.setStrokeCap(Paint.Cap.ROUND);
-        _paint.setStrokeWidth(LineThickness);
+        float lineThickness = 4;
+        _paint.setStrokeWidth(lineThickness);
     }
 
     @Override
@@ -65,7 +62,8 @@ public class CaptureBitmapView extends View {
     private void TouchMove(float x, float y) {
         float dx = Math.abs(x - _mX);
         float dy = Math.abs(y - _mY);
-        if (dx >= TouchTolerance || dy >= TouchTolerance) {
+        float touchTolerance = 4;
+        if (dx >= touchTolerance || dy >= touchTolerance) {
             _Path.quadTo(_mX, _mY, (x + _mX) / 2, (y + _mY) / 2);
             _mX = x;
             _mY = y;
@@ -82,6 +80,7 @@ public class CaptureBitmapView extends View {
         _Path.reset();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         super.onTouchEvent(e);
@@ -108,14 +107,6 @@ public class CaptureBitmapView extends View {
         _Canvas.drawColor(Color.WHITE);
         //_Canvas.drawColor(Color.argb(255, 237, 239, 250));
         invalidate();
-    }
-
-    @SuppressLint("WrongThread")
-    public byte[] getBytes() {
-        Bitmap b = getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
     }
 
     public Bitmap getBitmap() {

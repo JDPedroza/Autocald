@@ -1,4 +1,4 @@
-package com.example.autocald.ui.maintenanceData.technicalData;
+package com.example.autocald.ui.maintenanceData;
 
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
@@ -22,13 +22,21 @@ import android.widget.TimePicker;
 import com.example.autocald.R;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class TechnicalData extends Fragment {
 
+    private int hour_start;
+    private int minutes_start;
+    private int hour_end;
+    private int minutes_end;
     private TextView Time_start;
     private TextView Time_end;
+    private TextView Time_total;
     private EditText editText_name_technical;
     private SharedPreferences dataForm;
+    private boolean time_start;
+    private boolean time_end;
 
     public TechnicalData() {
     }
@@ -74,8 +82,12 @@ public class TechnicalData extends Fragment {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        hour_start=hourOfDay;
+                        minutes_start=minute;
                         Time_start.setText(hourOfDay+":"+minute);
                         setDataForm(2);
+                        time_start=true;
+                        timeTotal();
                     }
                 },hora,minutos,false);
                 timePickerDialog.show();
@@ -93,13 +105,18 @@ public class TechnicalData extends Fragment {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        hour_end=hourOfDay;
+                        minutes_end=minute;
                         Time_end.setText(hourOfDay+":"+minute);
                         setDataForm(3);
+                        time_end=true;
+                        timeTotal();
                     }
                 },hora,minutos,false);
                 timePickerDialog.show();
             }
         });
+        Time_total = view.findViewById(R.id.textView_time_total_result);
         getDataForm();
     }
 
@@ -113,8 +130,10 @@ public class TechnicalData extends Fragment {
             editor.putString("nameTechnical", editText_name_technical.getText().toString());
         }else if(id==2){
             editor.putString("timeStart", Time_start.getText().toString());
-        }else{
+        }else if(id==3){
             editor.putString("timeEnd", Time_end.getText().toString());
+        }else{
+            editor.putString("timeTotal", Time_total.getText().toString());
         }
         editor.apply();
     }
@@ -134,17 +153,23 @@ public class TechnicalData extends Fragment {
         editor.clear();
         editor.apply();
     }
-    /*
+    @SuppressLint("SetTextI18n")
     private void timeTotal(){
-        Date fecha1 = ...;
-        Date fecha2 = ...;
-        long milisegundos = fecha1.getTime() - fecha2.getTime();
-        Calendar calendario = Calendar.getInstance();
-        calendario.setTimeInMillis(milisegundos);
+        if(time_start&&time_end){
+            Date fecha1 = new Date();
+            Date fecha2 = new Date();
+            fecha1.setHours(hour_start);
+            fecha1.setMinutes(minutes_start);
+            fecha2.setHours(hour_end);
+            fecha2.setMinutes(minutes_end);
 
-        int horas = calendario.get(Calendar.HOUR);
-        int minutos = calendario.get(Calendar.MINUTE);
-        int segundos = calendario.get(Calendar.SECOND);
+            long diff = fecha2.getTime() - fecha1.getTime();
+
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000);
+
+            Time_total.setText(diffHours+":"+diffMinutes);
+        }
+        setDataForm(4);
     }
-     */
 }

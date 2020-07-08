@@ -62,13 +62,13 @@
     <string name="title_model_year">Modelo - Año</string>
 
     <!--Formulario Datos Equipo-->
-    <string name="title_vapor_pressure">Presion de Vapor</string>
-    <string name="title_air_atomization">Atomizacion de aire</string>
-    <string name="title_steam_atomization">Atomizacion de vapor</string>
+    <string name="title_vapor_pressure">Presión de Vapor</string>
+    <string name="title_air_atomization">Atomización de aire</string>
+    <string name="title_steam_atomization">Atomización de vapor</string>
     <string name="title_fuel_temperature">Temperatura de combustible</string>
-    <string name="title_fuel_pressure">Presion de combustible</string>
-    <string name="title_line_gas_pressure">Presion de Gas Linea</string>
-    <string name="title_gas_train_pressure">Presion de Gas Tren</string>
+    <string name="title_fuel_pressure">Presión de combustible</string>
+    <string name="title_line_gas_pressure">Presión de Gas Linea</string>
+    <string name="title_gas_train_pressure">Presión de Gas Tren</string>
     <string name="title_gas_temperature">Temperatura de Gases</string>
     <string name="title_water_temperature">Temperatura de Agua</string>
     <string name="title_boiler_level">Nivel de Caldera</string>
@@ -78,7 +78,7 @@
     <string name="text_observations_number">0</string>
 
     <!--Formulario Datos Tecnico-->
-    <string name="title_name_technical">Nombre del Tecnico</string>
+    <string name="title_name_technical">Nombre del Técnico</string>
     <string name="title_time_start">Hora de Llegada</string>
     <string name="title_time_end">Hora de Salida</string>
     <string name="title_time_total">Horas Hombre</string>

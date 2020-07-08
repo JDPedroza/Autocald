@@ -1,13 +1,11 @@
 package com.example.autocald.controller.sliders;
 
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.autocald.ui.conditionBoilerElements.SliderFragment;
 
@@ -17,16 +15,10 @@ import java.util.List;
 public class ViewPagerAdapterController extends FragmentPagerAdapter {
 
     private Fragment mCurrentFragment;
-
-    //generamos un array para que sera recursivos los fragments
-    private FragmentManager fm;
-    FragmentTransaction tr;
-    List<Fragment> list=new ArrayList<>();
+    private List<Fragment> list=new ArrayList<>();
 
     public ViewPagerAdapterController(@NonNull FragmentManager fm) {
         super(fm);
-        this.fm = fm;
-        this.tr = fm.beginTransaction();
     }
 
     @NonNull

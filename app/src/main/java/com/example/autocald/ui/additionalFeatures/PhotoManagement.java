@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ public class PhotoManagement extends Fragment {
     private boolean[] photoSelected;
     private int numberPhotos=0;
     private SharedPreferences dataForm;
+    private ImageView imageView;
 
     public PhotoManagement() {
     }
@@ -67,6 +69,7 @@ public class PhotoManagement extends Fragment {
         ViewGroup.LayoutParams params = layoutGrid.getLayoutParams();
         params.height = maxHeight();
         layoutGrid.setLayoutParams(params);
+        imageView = view.findViewById(R.id.imageViewSearchImage);
         Button btnApplyChange = view.findViewById(R.id.btn_apply_changes);
         progressBar = view.findViewById(R.id.indeterminateBar);
         progressBar.setVisibility(View.GONE);
@@ -170,6 +173,7 @@ public class PhotoManagement extends Fragment {
         @SuppressLint("SetTextI18n")
         @Override
         protected void onPreExecute() {
+            imageView.setVisibility(View.INVISIBLE);
             progressTextInformation.setText(getText(R.string.load_data)+"\n"+getText(R.string.menu_burner_assembly));
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setMax(100);
@@ -183,6 +187,11 @@ public class PhotoManagement extends Fragment {
             gridViewImage.setAdapter(photoManagementAdapter);
             if(photoSelected==null){
                 photoManagementAdapter.generatePhotoSelected();
+            }
+            if(photoManagementAdapter.getChanges()){
+                imageView.setVisibility(View.INVISIBLE);
+            }else{
+                imageView.setVisibility(View.VISIBLE);
             }
             gridViewImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -220,6 +229,11 @@ public class PhotoManagement extends Fragment {
         editor.apply();
         photoManagementAdapter = new PhotoManagementAdapter(getContext());
         new LoadGrid().execute();
+        if(photoManagementAdapter.getChanges()){
+            imageView.setVisibility(View.INVISIBLE);
+        }else{
+            imageView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void createDateForm(){

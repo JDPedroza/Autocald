@@ -1,4 +1,4 @@
-package com.example.autocald.ui.maintenanceData.dataClient;
+package com.example.autocald.ui.maintenanceData;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -80,7 +80,7 @@ public class DataClient extends Fragment {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        getActivity(), new DatePickerDialog.OnDateSetListener() {
+                        requireActivity(), new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -96,7 +96,7 @@ public class DataClient extends Fragment {
         spinner = view.findViewById(R.id.spinnerTypesServices);
         //leemos el array
         String [] observaciones={"Mant General y Correctivo", "Reparación", "Otro"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.spinner_item_sliders, observaciones);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity().getApplicationContext(), R.layout.spinner_item_sliders, observaciones);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -209,7 +209,7 @@ public class DataClient extends Fragment {
     }
 
     private void createDataForm(){
-        dataForm = getActivity().getSharedPreferences("M1DataClient", Context.MODE_PRIVATE);
+        dataForm = requireActivity().getSharedPreferences("M1DataClient", Context.MODE_PRIVATE);
     }
 
     private void setDataForm(int i){
@@ -238,7 +238,7 @@ public class DataClient extends Fragment {
     }
 
     private void getDataFrom(){
-        dataForm = getActivity().getSharedPreferences("M1DataClient", Context.MODE_PRIVATE);
+        dataForm = requireActivity().getSharedPreferences("M1DataClient", Context.MODE_PRIVATE);
         serviceControl.setText(dataForm.getString("serviceControl", ""));
         textViewDateEditable.setText(dataForm.getString("serviceDate", "00/00/00"));
         spinner.setSelection(dataForm.getInt("serviceType", 0));

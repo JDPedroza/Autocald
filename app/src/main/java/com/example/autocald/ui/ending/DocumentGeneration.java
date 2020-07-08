@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ public class DocumentGeneration extends Fragment {
     private PdfPTable table;
     private Bitmap[] bmFinals;
     private boolean[] photosSelected;
+    private ImageView imageView;
 
     public DocumentGeneration() {
     }
@@ -75,6 +77,7 @@ public class DocumentGeneration extends Fragment {
         LinearLayout layoutPdfView = view.findViewById(R.id.layoutPdfView);
         ViewGroup.LayoutParams params = layoutPdfView.getLayoutParams();
         params.height = maxHeight();
+        imageView = view.findViewById(R.id.imageViewSearchDocument);
         layoutPdfView.setLayoutParams(params);
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -262,6 +265,7 @@ public class DocumentGeneration extends Fragment {
         @SuppressLint("SetTextI18n")
         @Override
         protected void onPreExecute() {
+            imageView.setVisibility(View.INVISIBLE);
             progressTextInformation.setText("Generando Bases");
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setMax(100);
@@ -328,6 +332,7 @@ public class DocumentGeneration extends Fragment {
         @SuppressLint("SetTextI18n")
         @Override
         protected void onPreExecute() {
+            imageView.setVisibility(View.INVISIBLE);
             progressTextInformation.setVisibility(View.VISIBLE);
             progressTextInformation.setText("Abriendo Documento");
             progressBar.setVisibility(View.VISIBLE);
@@ -338,7 +343,6 @@ public class DocumentGeneration extends Fragment {
         @Override
         protected void onPostExecute(Boolean result) {
             progressBar.setVisibility(View.GONE);
-            progressTextInformation.setVisibility(View.INVISIBLE);
             Toast.makeText(getContext(), "Documento Actualizado", Toast.LENGTH_SHORT).show();
             viewPDF();
         }

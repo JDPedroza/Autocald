@@ -70,6 +70,12 @@
             android:textColor="@color/colorAccent"
             android:textSize="10sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imageViewSearchDocument"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search_document" />
     </RelativeLayout>
 
     <LinearLayout

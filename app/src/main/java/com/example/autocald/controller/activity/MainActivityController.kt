@@ -9,9 +9,9 @@ import com.example.autocald.ui.additionalFeatures.Observations
 import com.example.autocald.ui.additionalFeatures.PhotoManagement
 import com.example.autocald.ui.additionalFeatures.Recommendations
 import com.example.autocald.ui.conditionBoilerElements.MainConditionBoilerElements
-import com.example.autocald.ui.maintenanceData.computerData.ComputerData
-import com.example.autocald.ui.maintenanceData.dataClient.DataClient
-import com.example.autocald.ui.maintenanceData.technicalData.TechnicalData
+import com.example.autocald.ui.maintenanceData.ComputerData
+import com.example.autocald.ui.maintenanceData.DataClient
+import com.example.autocald.ui.maintenanceData.TechnicalData
 
 class MainActivityController {
     companion object {
@@ -25,24 +25,24 @@ class MainActivityController {
             supportFragmentManager.beginTransaction().remove(fragment).commit()
         }
         fun resetFragment(fragment: DataClient){
-            fragment.resetForm();
+            fragment.resetForm()
         }
         fun resetFragment(fragment: ComputerData){
-            fragment.resetForm();
+            fragment.resetForm()
         }
         fun resetFragment(fragment: TechnicalData){
-            fragment.resetForm();
+            fragment.resetForm()
         }
         fun resetFragment(fragment: MainConditionBoilerElements){
-            fragment.resetForm();
+            fragment.resetForm()
         }
         @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
         fun resetFragment(fragment: Observations){
-            fragment.resetForm();
+            fragment.resetForm()
         }
         @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
         fun resetFragment(fragment: Recommendations){
-            fragment.resetForm();
+            fragment.resetForm()
         }
         fun addPhoto(fragment: MainConditionBoilerElements, path: String){
             fragment.addPhoto(path)

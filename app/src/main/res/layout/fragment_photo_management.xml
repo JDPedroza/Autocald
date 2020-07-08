@@ -75,7 +75,13 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageViewSearchImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search_image" />
+    </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/layoutButtons"
@@ -97,4 +103,5 @@
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

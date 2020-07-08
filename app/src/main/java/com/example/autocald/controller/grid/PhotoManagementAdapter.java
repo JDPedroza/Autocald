@@ -19,9 +19,10 @@ public class PhotoManagementAdapter extends BaseAdapter {
     private Context context;
     private String[] paths;
     private SharedPreferences dataForm;
-    private Bitmap[]bitmaps = {};
+    private Bitmap[]bitmaps={};
     private boolean[] photoSelected;
     private int selectedPosition = -1;
+    private boolean changes;
 
     public PhotoManagementAdapter(Context context){
         this.context = context;
@@ -170,6 +171,7 @@ public class PhotoManagementAdapter extends BaseAdapter {
     public void loadBitmaps() throws IOException {
         if(this.paths!=null){
             this.bitmaps= new Bitmap[this.paths.length];
+            this.changes=true;
             for(int i=0; i<this.paths.length; i++){
                 Bitmap bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(paths[i]));
                 bm = Bitmap.createScaledBitmap(bm, 650, 900, true);
@@ -248,6 +250,10 @@ public class PhotoManagementAdapter extends BaseAdapter {
 
     public void loadPhotoSelected(boolean[] photoSelected) {
         this.photoSelected=photoSelected;
+    }
+
+    public boolean getChanges(){
+        return this.changes;
     }
 }
 

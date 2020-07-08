@@ -84,7 +84,7 @@ public class TemplatePDF extends FileProvider{
     public String generateExtraSubject(){
         String numberService = "0";
         String nameClient = "No definido";
-        String typeService = "";
+        String typeService;
         if(!this.dataClient[3].equals("")){
             nameClient = this.dataClient[3];
         }
@@ -113,7 +113,7 @@ public class TemplatePDF extends FileProvider{
                 {"Nivel de Tanq Combustible", "", ""},
         };
         //3
-        this.dataTechnical = new String[]{"Carlos Martinez - Santiago Sanchez", "0", "0", "0", "Ivan Fernando Camargo"};
+        this.dataTechnical = new String[]{"", "", "", "", ""};
         //4
         this.dataBurnerAssembly = new String[][]{
                 {"Valvula de Combustible", "", ""},
@@ -283,6 +283,7 @@ public class TemplatePDF extends FileProvider{
         this.dataTechnical[0]=dataForm.getString("nameTechnical", "");
         this.dataTechnical[1]=dataForm.getString("timeStart", "0:00");
         this.dataTechnical[2]=dataForm.getString("timeEnd", "0:00");
+        this.dataTechnical[3]=dataForm.getString("timeTotal", "0:00");
     }
     public void loadDataBurnerAssembly() {
         String[]namesDataForm={"M4FuelValve", "M4Fan", "M4IgnitionTransformer", "M4Electrodes", "M4HighCable", "M4FuelNozzle", "M4FuelRegulator", "M4FuelFilter", "M4FuelLine", "M4FuelGauges", "M4PressureSwich"};
@@ -625,7 +626,7 @@ public class TemplatePDF extends FileProvider{
     }
     public PdfPCell customizeCell(String text, int font, boolean title, boolean center, int rowSpan, int colSpan){
         PdfPCell cell = new PdfPCell();
-        Paragraph paragraph = new Paragraph();
+        Paragraph paragraph;
         //add text and format
         if(font==0){
             paragraph = new Paragraph(text, fTextGenericTitle);
@@ -916,7 +917,7 @@ public class TemplatePDF extends FileProvider{
             }else if(i==2){
                 table.addCell(customizeCell("Revisado:", 3, true, true, 0, 5));
                 table.addCell(customizeCell("Horas Hombre: " + getData(3,i, 3), 0, false,false, 2, 5));
-            }else if(i==3){
+            }else{
                 table.addCell(customizeCell(getData(3, i, 4),3, false, true, 0, 5));
             }
         }

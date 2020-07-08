@@ -21,11 +21,11 @@ import com.example.autocald.controller.activity.MainActivityController;
 import com.example.autocald.ui.additionalFeatures.Observations;
 import com.example.autocald.ui.additionalFeatures.Recommendations;
 import com.example.autocald.ui.conditionBoilerElements.MainConditionBoilerElements;
-import com.example.autocald.ui.maintenanceData.computerData.ComputerData;
-import com.example.autocald.ui.maintenanceData.dataClient.DataClient;
+import com.example.autocald.ui.maintenanceData.ComputerData;
+import com.example.autocald.ui.maintenanceData.DataClient;
 import com.example.autocald.ui.ending.DigitalSignature;
 import com.example.autocald.ui.ending.DocumentGeneration;
-import com.example.autocald.ui.maintenanceData.technicalData.TechnicalData;
+import com.example.autocald.ui.maintenanceData.TechnicalData;
 import com.example.autocald.ui.additionalFeatures.PhotoManagement;
 import com.example.autocald.utilities.Reset;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //DocumentGeneration
                 if(item.getItemId()==R.id.nav_document_generation){
-                    if(bmFinals!=null){
+                    if(bmFinals!=null&&photosSelected!=null){
                         MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration(bmFinals, photosSelected), "documentGeneration");
                     }else{
                         MainActivityController.Companion.replaceFragment(getSupportFragmentManager(), findViewById(R.id.contenedorFragment), documentGeneration = new DocumentGeneration(), "documentGeneration");
@@ -404,7 +404,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if(photoManagement!=null && photoManagement.isVisible()){
             if(resultCode == RESULT_OK){
+                assert data != null;
                 Uri imageUri = data.getData();
+                assert imageUri != null;
                 String path = imageUri.toString();
                 MainActivityController.Companion.addImage(photoManagement, path);
             }

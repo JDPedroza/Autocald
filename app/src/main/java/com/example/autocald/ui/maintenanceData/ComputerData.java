@@ -1,4 +1,4 @@
-package com.example.autocald.ui.maintenanceData.computerData;
+package com.example.autocald.ui.maintenanceData;
 
 import android.content.Context;
 import android.content.SharedPreferences;

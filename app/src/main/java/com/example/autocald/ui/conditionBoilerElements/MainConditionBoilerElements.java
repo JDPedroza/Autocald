@@ -32,7 +32,7 @@ public class MainConditionBoilerElements extends Fragment{
 
     public MainConditionBoilerElements(int module) {
         if(module==4){
-            this.title = new String[]{"Valvula de Combustible", "Ventilador", "Trasformador de Ignicion", "Electrodos", "Cable de Alta", "Boquilla de combustible", "Reguladora de Combustible", "Filtro de combustible", "Tuberia de combustible", "Manometros de Combustible", "Swich de Presion"};
+            this.title = new String[]{"Válvula de Combustible", "Ventilador", "Trasformador de Ignicion", "Electrodos", "Cable de Alta", "Boquilla de combustible", "Reguladora de Combustible", "Filtro de combustible", "Tuberia de combustible", "Manometros de Combustible", "Swich de Presión"};
             this.dataForm = new String[]{"M4FuelValve", "M4Fan", "M4IgnitionTransformer", "M4Electrodes", "M4HighCable", "M4FuelNozzle", "M4FuelRegulator", "M4FuelFilter", "M4FuelLine", "M4FuelGauges", "M4PressureSwich"};
         }else if(module==5){
             this.title = new String[]{"Control de Presion", "Termostato", "Warrick( Bajo nivel Aux)", "Modutrol", "Control de Modulacion", "Manometros", "Valvulas de seguridad", "Swich de Aire Ventilador"};
